@@ -1,7 +1,12 @@
-# Vue 3 + Vite
+<!--
+ * @Description: 请输入当前文件描述
+ * @Author: @Xin (834529118@qq.com)
+ * @Date: 2021-10-12 20:32:08
+ * @LastEditTime: 2021-10-12 20:38:49
+ * @LastEditors: @Xin (834529118@qq.com)
+-->
+# 基于pnpm管理的搭建组件库项目
+# 引导项目
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+pnpm i
 
-## Recommended IDE Setup
-
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
