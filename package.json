@@ -1,5 +1,5 @@
 {
-  "name": "dfsj-auth",
+  "name": "rollup-components-app",
   "version": "0.0.0",
   "scripts": {
     "dev:lib": "pnpm -C packages dev",
