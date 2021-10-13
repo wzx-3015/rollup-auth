@@ -1,6 +1,6 @@
 {
   "name": "dfsj-auth",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "lib/index.js",
   "description": "集成权限管理系统",
   "scripts": {
