@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 15:13:05
- * @LastEditTime: 2021-10-12 13:32:44
+ * @LastEditTime: 2021-10-13 17:11:05
  * @LastEditors: @Xin (834529118@qq.com)
  */
 /*
@@ -232,4 +232,26 @@ export const addRoutes = (Router, routes) => {
   })
 
   return Promise.resolve('success')
+}
+
+/**
+ * @description:  处理路由path路径（解决动态传参）
+ * @param {String} path 路由path
+ * @return {*}
+ */
+export const handleExecPath = (path = '/') => {
+  const re = /([^/]+)/
+
+  const execPath = re.exec(path)
+
+  return execPath && execPath[0]
+}
+
+/**
+ * @description:  获取路由path信息
+ * @param {Array} routes 路由信息
+ * @return {*}
+ */
+export const getRoutePath = (routes = []) => {
+  return routes.map(v => handleExecPath(v.path))
 }
