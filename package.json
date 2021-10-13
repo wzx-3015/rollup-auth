@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev:lib": "pnpm -C packages dev",
+    "buld:lib": "pnpm -C packages build",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
