@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:36:02
- * @LastEditTime: 2021-10-12 17:26:17
+ * @LastEditTime: 2021-10-13 14:53:52
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import NProgress from 'nprogress'
@@ -22,6 +22,8 @@ import { login, getUserInfo } from './service/index'
 import { authPropsInjectKey } from './injectKey'
 import { START_LOCATION } from 'vue-router'
 
+const development = process.env.NODE_ENV === 'development'
+
 /**
  * @description:  重定向路由（解决动态添加路由第一次不生效）
  * @param {*}
@@ -35,7 +37,10 @@ const routeReplace = (routes, to, path = null) => {
   const findRoute = routes.find(route => route.path === to.path)
 
   const { query: { ak, ...rest }, params } = to
-
+  if (development) {
+    console.log('[dfsj-auth-module]:routeReplace', to)
+    console.log('[dfsj-auth-module]:routeReplace-findRoute', findRoute)
+  }
   // 如果动态路由中存在此路径 && vue-router 没有匹配到或者匹配到404则进行刷新
   if (findRoute && (!to.matched.length || to.matched.some(({ name }) => name === '404'))) {
     return { path: to.fullPath, replace: true, query: { ...rest }, params: params }
@@ -169,7 +174,7 @@ export default (app, {
 
       NProgress.done()
 
-      return routeReplace(routes, to)
+      return routeReplace(flatAsyncRoute(routes), to)
     }
 
     if (ak && !localStorageGetLoginToken()) {

@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 16:06:23
- * @LastEditTime: 2021-10-12 16:59:28
+ * @LastEditTime: 2021-10-13 14:45:48
  * @LastEditors: @Xin (834529118@qq.com)
  */
 const asyncRoutes = [
@@ -12,7 +12,7 @@ const asyncRoutes = [
     path: '/',
     children: [
       {
-        path: '/',
+        path: '/demo',
         name: 'LeftLayout',
         component: () => import('../layout/LeftLayout.vue'),
         redirect: '/home',

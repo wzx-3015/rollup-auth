@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-10-12 10:29:52
- * @LastEditTime: 2021-10-12 15:59:14
+ * @LastEditTime: 2021-10-13 14:30:47
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import { createApp } from 'vue'
@@ -15,7 +15,7 @@ import asyncRoutes from './router/asyncRoutes'
 
 createApp(App).use(router).use(ElementPlus).use(dfsjUnifyAuth, {
   systemName: '测试权限管理平台',
-  loginAuth: true,
+  loginAuth: false,
   asyncRoutes,
   loginPath: 'http://192.168.40.4:9081/#/login'
 }).mount('#app')
