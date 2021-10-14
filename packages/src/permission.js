@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:36:02
- * @LastEditTime: 2021-10-13 17:14:49
+ * @LastEditTime: 2021-10-14 09:50:56
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import NProgress from 'nprogress'
@@ -189,12 +189,12 @@ export default (app, {
 
       const { addroutesArray } = await handleRequestModule(res.data.modules, res.data)
 
-      if (to.path === '/403') {
-        return {
-          path: START_LOCATION.path,
-          replace: true
-        }
-      }
+      // if (to.path === '/403') {
+      //   return {
+      //     path: START_LOCATION.path,
+      //     replace: true
+      //   }
+      // }
 
       return routeReplace(addroutesArray, to)
     }
