@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 15:13:05
- * @LastEditTime: 2021-10-16 11:38:49
+ * @LastEditTime: 2021-10-16 11:42:24
  * @LastEditors: @Xin (834529118@qq.com)
  */
 /*
@@ -270,5 +270,5 @@ export const getRoutePath = (routes = []) => {
   const route = useRoute()
   const { resources = [] } = route.meta
 
-  return resources.some(v => permission.includes(v.methods))
+  return resources.some(v => permission.includes(v.method))
 }
