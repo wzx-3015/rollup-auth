@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:36:02
- * @LastEditTime: 2021-10-14 09:50:56
+ * @LastEditTime: 2021-10-16 11:26:34
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import NProgress from 'nprogress'
@@ -22,7 +22,8 @@ import { createDuserStore } from './userStore/index'
 import { defaultRoutes } from './router/index'
 import { login, getUserInfo } from './service/index'
 import { authPropsInjectKey } from './injectKey'
-import { START_LOCATION } from 'vue-router'
+// import { START_LOCATION } from 'vue-router'
+import hasPermi from './directive/hasPermi'
 
 const development = process.env.NODE_ENV === 'development'
 
@@ -94,6 +95,7 @@ export default (app, {
 
   // 全局注入配置信息
   app.provide(authPropsInjectKey, propsData)
+  app.directive('hasPermi', hasPermi)
 
   // 扁平化路由并获取path信息
   const asynLogincRoutesPath = Array.from(new Set(getRoutePath(flatAsyncRoute(asyncRoutes)).filter(v => v)))
