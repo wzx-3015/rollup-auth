@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-06 17:53:11
- * @LastEditTime: 2021-10-12 15:47:29
+ * @LastEditTime: 2021-10-20 10:00:12
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -55,7 +55,8 @@ export default {
         router.back()
       } else {
         localStorageReomveLoginToken()
-        openLoginPage({ loginPath, systemName })
+        const url = window.location.href.replace('403', '')
+        openLoginPage({ loginPath, systemName, url })
       }
     }
 
