@@ -11,6 +11,7 @@ import { logout } from '../service/index'
 
 const initStoreData = () => {
   return {
+    asyncRouteTo: true, // 是否前往动态路由
     loginPath: '',
     systemName: '',
     login: false,
@@ -52,6 +53,15 @@ class DuserStore {
         this.userState[k] = userState[k]
       }
     })
+  }
+
+  /**
+   * @description:  修改是偶前往动态路由
+   * @param {*} data
+   * @return {*}
+   */  
+  setAsyncRouteTo (data) {
+    this.userState.asyncRouteTo = data
   }
 
   /**

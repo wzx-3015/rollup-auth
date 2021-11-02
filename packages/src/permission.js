@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:36:02
- * @LastEditTime: 2021-10-16 11:26:34
+ * @LastEditTime: 2021-11-02 16:37:39
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import NProgress from 'nprogress'
@@ -217,6 +217,7 @@ export default (app, {
       await addRoutes(router, defaultRoutes)
       
       NProgress.done()
+      DuserStore.setAsyncRouteTo(false)
       return routeReplace(defaultRoutes, to)
     }
 
