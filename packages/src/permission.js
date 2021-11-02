@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:36:02
- * @LastEditTime: 2021-11-02 16:37:39
+ * @LastEditTime: 2021-11-02 16:59:23
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import NProgress from 'nprogress'
@@ -197,6 +197,7 @@ export default (app, {
       //     replace: true
       //   }
       // }
+      DuserStore.setAsyncRouteTo(true)
 
       return routeReplace(addroutesArray, to)
     }
@@ -208,6 +209,8 @@ export default (app, {
       const { modules } = res.data
 
       const { Routes } = await handleRequestModule(modules, res.data)
+
+      DuserStore.setAsyncRouteTo(true)
 
       return routeReplace(Routes, to)
     }
@@ -224,6 +227,7 @@ export default (app, {
     // 检测到访问动态路由 && localStorage丢失
     if (asynLogincRoutesPath.includes(handleExecPath(to.path)) && !localStorageGetLoginToken()) {
       NProgress.done()
+      DuserStore.setAsyncRouteTo(true)
 
       return {
         path: '/403',

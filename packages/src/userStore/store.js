@@ -11,7 +11,7 @@ import { logout } from '../service/index'
 
 const initStoreData = () => {
   return {
-    asyncRouteTo: true, // 是否前往动态路由
+    asyncRouteTo: false, // 是否前往动态路由
     loginPath: '',
     systemName: '',
     login: false,
