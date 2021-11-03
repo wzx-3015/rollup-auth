@@ -2,7 +2,7 @@
  * @Description: 登录、注销、退出等全局请求
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-05-06 11:04:15
- * @LastEditTime: 2021-10-12 16:05:50
+ * @LastEditTime: 2021-11-03 15:21:43
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import axios from 'axios'
@@ -81,6 +81,7 @@ export const logout = ({loginPath, systemName}) => {
         loginPath,
         systemName,
         href: window.location.href,
+        logout: true
       })
       return res
     } else {

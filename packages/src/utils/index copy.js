@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 15:13:05
- * @LastEditTime: 2021-11-03 15:24:45
+ * @LastEditTime: 2021-11-03 15:21:30
  * @LastEditors: @Xin (834529118@qq.com)
  */
 /*
@@ -12,21 +12,21 @@
  * @LastEditTime: 2021-06-04 14:58:14
  * @LastEditors: @Xin (834529118@qq.com)
  */
-import { defaultsDeep, isArray } from "lodash-es";
-import { ElMessageBox } from "element-plus";
-import { useRoute } from "vue-router";
+import { defaultsDeep, isArray } from 'lodash-es'
+import { ElMessageBox } from 'element-plus'
+import { useRoute } from 'vue-router'
 
 // 系统名称
-const LOGINGSTATUS = "loginToken";
+const LOGINGSTATUS = 'loginToken'
 
 /**
  * @description:   设置TOKEN
  * @param {String} TOKEN
  * @return {*}
  */
-export const localStorageSetLoginToken = (TOKEN) => {
-  TOKEN && localStorage.setItem(LOGINGSTATUS, TOKEN);
-};
+export const localStorageSetLoginToken = TOKEN => {
+  TOKEN && localStorage.setItem(LOGINGSTATUS, TOKEN)
+}
 
 /**
  * @description:  移除TOKEN
@@ -34,8 +34,8 @@ export const localStorageSetLoginToken = (TOKEN) => {
  * @return {*}
  */
 export const localStorageReomveLoginToken = () => {
-  return localStorage.removeItem(LOGINGSTATUS);
-};
+  return localStorage.removeItem(LOGINGSTATUS)
+}
 
 /**
  * @description: 获取TOKEN
@@ -43,8 +43,8 @@ export const localStorageReomveLoginToken = () => {
  * @return {String || null} TOKEN
  */
 export const localStorageGetLoginToken = () => {
-  return localStorage.getItem(LOGINGSTATUS);
-};
+  return localStorage.getItem(LOGINGSTATUS)
+}
 
 /**
  * @description:  跳转登录页(可指定携带参数跳转地址,默认获取携带当前地址跳转)
@@ -53,38 +53,38 @@ export const localStorageGetLoginToken = () => {
  * @param {String}  Object.url callbackUrl携带路径
  * @return {null}
  */
-export const openLoginPage = ({
+ export const openLoginPage = ({
   loginPath,
-  systemName = "管理系统",
-  url,
-  logout = false,
+  systemName = '管理系统',
+  url
 }) => {
   if (!loginPath) {
-    throw new Error("[openLoginPage]: loginPath is not is not defined");
+    throw new Error('[openLoginPage]: loginPath is not is not defined')
   }
 
-  const { href } = window.location;
+  const { href } = window.location
 
-  const pathQuery = `?callbackUrl=${encodeURIComponent(
-    url || href
-  )}&name=${escape(systemName)}${logout ? "&logout=true" : ""}`;
+  if (url) {
+    window.location.replace(`${loginPath}?callbackUrl=${encodeURIComponent(url)}&name=${escape(systemName)}`)
+    return
+  }
 
-  window.location.replace(`${loginPath}${pathQuery}`);
-};
+  window.location.replace(`${loginPath}?callbackUrl=${encodeURIComponent(href)}&name=${escape(systemName)}`)
+}
 
 /**
  * @description: 将模块信息转化为路由信息
  * @param {Array}  Modules
  * @return {Array} routes
  */
-export const handleModules = (Modules) => {
+export const handleModules = Modules => {
   return Modules.map(({ childs, url, resources, name, view, leaf, id }) => {
     if (childs) {
       return {
         children: handleModules(childs),
         name: url,
         beforeEnter(route) {
-          document.title = `${route.meta.title}`;
+          document.title = `${route.meta.title}`
         },
         meta: {
           id,
@@ -93,12 +93,12 @@ export const handleModules = (Modules) => {
           view,
           leaf,
         },
-      };
+      }
     } else {
       return {
         name: url,
         beforeEnter(route) {
-          document.title = `${route.meta.title}`;
+          document.title = `${route.meta.title}`
         },
         meta: {
           id,
@@ -107,28 +107,28 @@ export const handleModules = (Modules) => {
           view,
           leaf,
         },
-      };
+      }
     }
-  });
-};
+  })
+}
 
 /**
  * @description:    将嵌套动态路由散列为单层路由
  * @param {Array} asyncRoutes  本地配置需要动态加载的路由模块
  * @return {Array} routes
  */
-export const flatAsyncRoute = (asyncRoutes) => {
+export const flatAsyncRoute = asyncRoutes => {
   return asyncRoutes.reduce((acc, current) => {
     if (current.children && current.children.length) {
-      const { children, ...rest } = current;
-      acc.push({ ...rest, children });
-      acc.push(...flatAsyncRoute(children));
+      const { children, ...rest } = current
+      acc.push({ ...rest, children })
+      acc.push(...flatAsyncRoute(children))
     } else {
-      acc.push(current);
+      acc.push(current)
     }
-    return acc;
-  }, []);
-};
+    return acc
+  }, [])
+}
 
 /**
  * @description: 合并路由信息(获取modules 和 asyncRoute的交集路由)
@@ -137,67 +137,57 @@ export const flatAsyncRoute = (asyncRoutes) => {
  * @return {Array} route
  */
 export const mergeRoutes = (modulRoues, asyncRoute) => {
-  return modulRoues.map((v) => {
+  return modulRoues.map(v => {
     if (v.children && v.children.length) {
-      const findRoute = asyncRoute.find((f) => f.name === v.name);
+      const findRoute = asyncRoute.find(f => f.name === v.name)
 
       if (findRoute) {
         return defaultsDeep(v, {
           ...findRoute,
           children: mergeRoutes(v.children, asyncRoute),
-        });
+        })
       } else {
-        console.error(
-          "未找到权限管理系统中与之路由名对应的模块,请检查配置项!",
-          v
-        );
-        throw new Error(
-          "未找到权限管理系统中与之路由名对应的模块,请检查配置项!"
-        );
+        console.error('未找到权限管理系统中与之路由名对应的模块,请检查配置项!', v)
+        throw new Error('未找到权限管理系统中与之路由名对应的模块,请检查配置项!')
       }
     } else {
-      const findRoute = asyncRoute.find((f) => f.name === v.name);
+      const findRoute = asyncRoute.find(f => f.name === v.name)
       if (findRoute) {
-        return defaultsDeep(v, findRoute);
+        return defaultsDeep(v, findRoute)
       } else {
-        console.error(
-          "未找到权限管理系统中与之路由名对应的模块,请检查配置项!",
-          v
-        );
-        throw new Error(
-          "未找到权限管理系统中与之路由名对应的模块,请检查配置项!"
-        );
+        console.error('未找到权限管理系统中与之路由名对应的模块,请检查配置项!', v)
+        throw new Error('未找到权限管理系统中与之路由名对应的模块,请检查配置项!')
       }
     }
-  });
-};
+  })
+}
 
 /**
  * @description:  生成导航栏
  * @param {*} routes  路由信息
  * @return {Array} Menus
  */
-export const handleMenu = (routes) => {
+export const handleMenu = routes => {
   return routes.reduce((acc, current) => {
-    const { children, ...rest } = current;
+    const { children, ...rest } = current
     if (children && children.length) {
       if (current.meta && current.meta.view) {
         acc.push({
           ...rest,
           component: null,
           children: handleMenu(children),
-        });
+        })
       } else {
-        acc.push(...handleMenu(children));
+        acc.push(...handleMenu(children))
       }
     } else {
       if (current.meta && current.meta.view) {
-        acc.push({ ...rest, component: null });
+        acc.push({ ...rest, component: null })
       }
     }
-    return acc;
-  }, []);
-};
+    return acc
+  }, [])
+}
 
 /**
  * @description: Token失效  异常弹窗告警
@@ -209,28 +199,27 @@ export const handleMenu = (routes) => {
  * @return {Nulimport('element-plus/es/utils/types').lable}
  */
 export const handleRequestTokenElMessageBoxConfirm = ({
-  message = "请尝试重新登录！",
-  title = "登录异常",
-  loginPath = "",
-  systemName = "",
-  url = "",
+  message = '请尝试重新登录！',
+  title = '登录异常',
+  loginPath = '',
+  systemName = '',
+  url = ''
 }) => {
   return ElMessageBox.confirm(message, title, {
-    confirmButtonText: "确定",
+    confirmButtonText: '确定',
     showClose: false,
-    type: "warning",
+    type: 'warning',
     showCancelButton: false,
     callback: () => {
-      localStorageReomveLoginToken();
+      localStorageReomveLoginToken()
       openLoginPage({
         loginPath,
         systemName,
-        url,
-        logout: true
-      });
+        url
+      })
     },
-  });
-};
+  })
+}
 
 /**
  * @description:  添加路由
@@ -239,25 +228,25 @@ export const handleRequestTokenElMessageBoxConfirm = ({
  * @return {Promise}
  */
 export const addRoutes = (Router, routes) => {
-  routes.forEach((v) => {
-    Router.addRoute(v);
-  });
+  routes.forEach(v => {
+    Router.addRoute(v)
+  })
 
-  return Promise.resolve("success");
-};
+  return Promise.resolve('success')
+}
 
 /**
  * @description:  处理路由path路径（解决动态传参）
  * @param {String} path 路由path
  * @return {*}
  */
-export const handleExecPath = (path = "/") => {
-  const re = /([^/]+)/;
+export const handleExecPath = (path = '/') => {
+  const re = /([^/]+)/
 
-  const execPath = re.exec(path);
+  const execPath = re.exec(path)
 
-  return execPath && execPath[0];
-};
+  return execPath && execPath[0]
+}
 
 /**
  * @description:  获取路由path信息
@@ -265,20 +254,21 @@ export const handleExecPath = (path = "/") => {
  * @return {*}
  */
 export const getRoutePath = (routes = []) => {
-  return routes.map((v) => handleExecPath(v.path));
-};
+  return routes.map(v => handleExecPath(v.path))
+}
+
 
 /**
  * @description:   权限校验
  * @param {Array} permission
  * @return {Boolean} true|false
  */
-export const hasPermission = (permission) => {
+ export const hasPermission = permission => {
   if (!isArray(permission)) {
-    throw new Error("permission is not Array");
+    throw new Error('permission is not Array')
   }
-  const route = useRoute();
-  const { resources = [] } = route.meta;
+  const route = useRoute()
+  const { resources = [] } = route.meta
 
-  return resources.some((v) => permission.includes(v.method));
-};
+  return resources.some(v => permission.includes(v.method))
+}
