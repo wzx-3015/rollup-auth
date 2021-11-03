@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-15 10:07:26
- * @LastEditTime: 2021-11-01 10:33:18
+ * @LastEditTime: 2021-11-03 13:45:13
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import { reactive } from 'vue'
@@ -28,6 +28,7 @@ const initStoreData = () => {
     flatMenus: [], // 扁平化的导航栏信息(方便数据处理)
     deptCode: '', // 所属部门
     deptName: '',// 所属部门
+    ext: {},
   }
 }
 
