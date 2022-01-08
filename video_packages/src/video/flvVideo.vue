@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:56:53
- * @LastEditTime: 2022-01-08 11:23:25
+ * @LastEditTime: 2022-01-08 16:02:20
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -24,6 +24,8 @@ import { loadJessibuca } from '../utils/index'
 import { scratchableLatexData } from '../injectKey'
 import { validatorJessibucaConfig } from '../utils/config'
 import emitter from '../emitter/index'
+import jessibucaUrl from '../static/jessibuca/jessibuca.js'
+import decoderUrl from '../static/jessibuca/decoder.js'
 
 export default {
   name: 'video-container',
@@ -126,7 +128,7 @@ export default {
         videoBuffer: 0.2,
         loadingTimeout: 40,
         useWCS: true,
-        decoder: './jessibuca/decoder.js',
+        decoder: decoderUrl,
         isNotMute: false,
         supportDblclickFullscreen: true,
         operateBtns: {
@@ -205,7 +207,7 @@ export default {
     }
 
     onMounted(() => {
-      loadJessibuca().then(() => {
+      loadJessibuca(jessibucaUrl).then(() => {
         initFlvVideo()
       })
     })

@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-10-12 09:13:40
- * @LastEditTime: 2022-01-08 10:37:06
+ * @LastEditTime: 2022-01-08 16:08:21
  * @LastEditors: @Xin (834529118@qq.com)
  */
 
@@ -18,17 +18,19 @@ import jsx from "acorn-jsx";
 import output from './buildconfig/output';
 import copy from 'rollup-plugin-copy'
 import cssnano from "cssnano";
+import resloveJessibuca from './reslove-jessibuca/index.js'
 
 export default {
   input: 'src/index.js',
-  external: ['vue'],
+  external: ['vue', 'jessibuca'],
   output: output,
   plugins: [
     del({ targets: 'dist/*' }),
     vuePlugin(),
+    resloveJessibuca(),
     nodeResolve(),
     babel({
-      exclude: 'node_modules/**',
+      exclude: ['node_modules/**', 'src/static/jessibuca/**'],
       babelHelpers: 'bundled',
       plugins: [
         '@vue/babel-plugin-jsx'
@@ -49,10 +51,10 @@ export default {
         dest: 'dist/style/fonts'
       },
       {
-        src: ['src/static/jessibuca/*'],
-        dest: 'dist/jessibuca'
+        src: ['src/static/jessibuca/decoder.wasm'],
+        dest: 'dist/assets'
       }
-    ] })
+    ]})
   ],
   acornInjectPlugins: [jsx()],
 }

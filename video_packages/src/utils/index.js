@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:26:36
- * @LastEditTime: 2022-01-08 10:38:57
+ * @LastEditTime: 2022-01-08 16:07:44
  * @LastEditors: @Xin (834529118@qq.com)
  */
 
@@ -24,7 +24,7 @@ export const getMediaDevices = () => {
  * @param {*}
  * @return {*}
  */
-export const loadJessibuca = (url = './jessibuca/jessibuca.js') => {
+export const loadJessibuca = (url = '/video_packages/dist/jessibuca/jessibuca.js') => {
   const jscript_essibuca = document.querySelector('script[jessibuca]')
   if (window.Jessibuca) {
     return Promise.resolve(window.Jessibuca)
