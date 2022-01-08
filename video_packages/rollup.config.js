@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-10-12 09:13:40
- * @LastEditTime: 2022-01-07 17:59:17
+ * @LastEditTime: 2022-01-08 10:37:06
  * @LastEditors: @Xin (834529118@qq.com)
  */
 
@@ -47,6 +47,10 @@ export default {
       {
         src: ['src/static/fonts/iconfont.ttf', 'src/static/fonts/iconfont.woff', 'src/static/fonts/iconfont.woff2'],
         dest: 'dist/style/fonts'
+      },
+      {
+        src: ['src/static/jessibuca/*'],
+        dest: 'dist/jessibuca'
       }
     ] })
   ],

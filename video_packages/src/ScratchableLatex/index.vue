@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-06 11:31:30
- * @LastEditTime: 2022-01-07 15:49:51
+ * @LastEditTime: 2022-01-08 11:21:43
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -39,6 +39,7 @@ export default {
     }
   },
   setup(props, { slots }) {
+    console.log(props.jessibucaConfig)
     provide(scratchableLatexData, {
       type: 'flv',
       jessibucaConfig: props.jessibucaConfig,

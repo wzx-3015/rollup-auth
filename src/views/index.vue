@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:47:28
- * @LastEditTime: 2022-01-07 17:37:56
+ * @LastEditTime: 2022-01-08 11:21:23
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -11,7 +11,7 @@
     退出登录
   </el-button> -->
   <div style="height: 900px">
-    <ScratchableLatex class="video-container" :autoPlay="true" :defaultNum="2" ref="videoContainer">
+    <ScratchableLatex class="video-container" :autoPlay="false" :defaultNum="2" :jessibucaConfig="{ operateBtns: { play: true } }" ref="videoContainer">
       <div>
         <flvVideo :url="videoUrl">
           ==========

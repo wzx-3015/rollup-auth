@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-06 13:47:26
- * @LastEditTime: 2022-01-06 14:23:25
+ * @LastEditTime: 2022-01-08 10:28:23
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import pkg from '../package.json'
@@ -29,7 +29,7 @@ if (!isSourcemap) {
   });
 } else {
   output.push({
-    file: pkg.main,
+    file: pkg.main.replace('.', `.es.`),
     format: 'es',
     globals,
     name,

@@ -2,18 +2,18 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:56:53
- * @LastEditTime: 2022-01-07 17:05:27
+ * @LastEditTime: 2022-01-08 11:23:25
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
   <div class="flv-video-container" :class="videoClass">
     <div ref="flvVideoEl" class="flv-video-el">
-      <div class="slot-canvas-layer">
-        <i class="iconfont icon-bofang"></i>
+      <div class="slot-canvas-layer" v-if="slotContainerShow">
         <slot />
       </div>
-      <div class="flv-video-controls">
 
+      <div class="one-play" v-if="onePlayShow" @click="handleVideoPlay()">
+        <i class="iconfont icon-bofang"></i>
       </div>
     </div>
   </div>
@@ -46,7 +46,9 @@ export default {
     }
   },
   expose: ['jessibuca', 'handleVideoResize'],
-  setup (props) {
+  setup (props, { slots }) {
+    const slotContainerShow = ref(slots.default && slots.default().length ? true : false)
+    const onePlayShow = ref(false)
     const jessibucaExample = ref(null)
     let jessibuca = null
 
@@ -73,6 +75,8 @@ export default {
     }
 
     const { autoPlay, jessibucaConfig } = initConfig()
+
+    console.log('========jessibucaConfig', jessibucaConfig)
 
     /**
      * @description: 处理video class
@@ -116,13 +120,13 @@ export default {
 
       jessibucaExample.value = jessibuca = new window.Jessibuca({
         container: el,
-        loadingText: "加载中",
+        loadingText: "加载中...",
         isFlv: true,
         debug: false,
         videoBuffer: 0.2,
         loadingTimeout: 40,
         useWCS: true,
-        decoder: '/decoder.js',
+        decoder: './jessibuca/decoder.js',
         isNotMute: false,
         supportDblclickFullscreen: true,
         operateBtns: {
@@ -133,6 +137,8 @@ export default {
         ...validatorJessibucaConfig(jessibucaConfig)
       })
 
+      onePlayShow.value = !autoPlay
+
       jessibuca.on('load', () => {
         autoPlay && handleVideoPlay(props.url)
       })
@@ -142,7 +148,10 @@ export default {
       })
 
       jessibuca.on('error', data => {
-        console.log('error', data)
+        // play 按钮不存在
+        if (!jessibucaConfig.operateBtns || !jessibucaConfig.operateBtns.play) {
+          onePlayShow.value = true
+        }
       })
 
       jessibuca.on('timeout',function(data){
@@ -164,7 +173,8 @@ export default {
         return
       }
 
-      jessibuca.play(url)
+      onePlayShow.value = false
+      jessibuca.play(url || props.url)
     }
 
     watchEffect(() => {
@@ -219,6 +229,9 @@ export default {
       jessibuca: jessibucaExample,
       videoClass,
       handleVideoResize,
+      slotContainerShow,
+      onePlayShow,
+      handleVideoPlay,
     }
   }
 }
@@ -246,6 +259,41 @@ export default {
     background: fade(red, 10%);
     color: #fff;
     transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+
+  .one-play {
+    width: 60px;
+    height: 60px;
+    color: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 5;
+    .iconfont {
+      font-size: 60px;
+    }
+  }
+
+  .flv-video-controls {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    background: fade(#000, 30%);
+    color: #fff;
+    z-index: 3;
+    opacity: 0;
+    height: 0;
+    transition: all 0.2s;
+    overflow: hidden;
+  }
+
+  &:hover {
+    .flv-video-controls {
+    }
   }
 }
 </style>
