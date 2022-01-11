@@ -2,10 +2,9 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-10-12 09:13:40
- * @LastEditTime: 2022-01-08 16:08:21
+ * @LastEditTime: 2022-01-11 20:57:47
  * @LastEditors: @Xin (834529118@qq.com)
  */
-
 import postcss from "rollup-plugin-postcss";
 import vuePlugin from 'rollup-plugin-vue';
 import image from '@rollup/plugin-image';
@@ -19,6 +18,7 @@ import output from './buildconfig/output';
 import copy from 'rollup-plugin-copy'
 import cssnano from "cssnano";
 import resloveJessibuca from './reslove-jessibuca/index.js'
+import autoprefixer from 'autoprefixer'
 
 export default {
   input: 'src/index.js',
@@ -26,7 +26,7 @@ export default {
   output: output,
   plugins: [
     del({ targets: 'dist/*' }),
-    vuePlugin(),
+    vuePlugin({ preprocessStyles: true }),
     resloveJessibuca(),
     nodeResolve(),
     babel({
@@ -41,6 +41,7 @@ export default {
     json(),
     postcss({
       plugins: [
+        autoprefixer(),
         cssnano()
       ],
       extract: 'style/index.css',

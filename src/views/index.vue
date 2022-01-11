@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:47:28
- * @LastEditTime: 2022-01-08 11:21:23
+ * @LastEditTime: 2022-01-10 16:12:40
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -13,9 +13,8 @@
   <div style="height: 900px">
     <ScratchableLatex class="video-container" :autoPlay="false" :defaultNum="2" :jessibucaConfig="{ operateBtns: { play: true } }" ref="videoContainer">
       <div>
-        <flvVideo :url="videoUrl">
-          ==========
-        </flvVideo>
+        <!-- <flvVideo :url="videoUrl"></flvVideo> -->
+        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8"></hlsVideo>
       </div>
       <div>
         <flvVideo :url="videoUrl"></flvVideo>
@@ -77,12 +76,13 @@
 </template>
 <script>
 // import { useDStore } from '../../packages/lib/index'
-import { flvVideo, ScratchableLatex } from 'dfsj-video'
+import { flvVideo, ScratchableLatex, hlsVideo } from 'dfsj-video'
 import { ref, onMounted } from 'vue'
 
 export default {
   components: { 
     flvVideo,
+    hlsVideo,
     ScratchableLatex,
   },
   setup () {

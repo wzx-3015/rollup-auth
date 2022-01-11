@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:56:53
- * @LastEditTime: 2022-01-08 16:02:20
+ * @LastEditTime: 2022-01-11 17:57:10
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -132,7 +132,7 @@ export default {
         isNotMute: false,
         supportDblclickFullscreen: true,
         operateBtns: {
-          play: false,
+          play: true,
           audio: false,
           fullscreen : false,
         },
@@ -180,7 +180,9 @@ export default {
     }
 
     watchEffect(() => {
-      handleVideoPlay(props.url)
+      if (jessibuca && jessibuca.isPlaying) {
+        handleVideoPlay(props.url)
+      }
     })
 
     const handleVideoResize = () => {
@@ -246,6 +248,10 @@ export default {
   width: 100%;
   height: 100%;
   display: inherit;
+
+  ::v-deep(.jessibuca-play-big) {
+    z-index: 5;
+  }
 }
 .flv-video-el {
   width: 100%;
@@ -258,8 +264,6 @@ export default {
     height: 100%;
     left: 50%;
     top: 50%;
-    background: fade(red, 10%);
-    color: #fff;
     transform: translate(-50%, -50%);
     z-index: 2;
   }
@@ -267,7 +271,7 @@ export default {
   .one-play {
     width: 60px;
     height: 60px;
-    color: #fff;
+    color: fade(#fff, 70%);
     position: absolute;
     left: 50%;
     top: 50%;
