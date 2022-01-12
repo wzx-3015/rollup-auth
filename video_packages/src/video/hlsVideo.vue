@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-12 17:04:53
+ * @LastEditTime: 2022-01-12 17:10:11
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -261,7 +261,7 @@ export default {
      * @return {*}
      */
     const handleFullScreenClick = () => {
-      if (!videoStatus.fullScreen) {
+      if (!videoStatus.fullscreen) {
         launchFullscreen(hlsVideoFullScreenEl.value)
       } else {
         exitFullscreen()
