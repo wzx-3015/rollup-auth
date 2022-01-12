@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-10-12 20:32:08
- * @LastEditTime: 2022-01-12 16:49:35
+ * @LastEditTime: 2022-01-12 16:58:53
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 # 视频九宫格组件 支持flv、m3u8 基于hls.js、jessibuca.js二次开发
@@ -40,7 +40,7 @@ _________________
 ## 九宫格 ScratchableLatex组件
 >1. ScratchableLatex 实现配合visibility: hidden; display: none; <font color="red">注：因jessibuca.js 采用webGL 绘制，频繁创建多个实例会导致最先创建的几个webGL 实例丢失，视频无法播放</font>
 >2. ScratchableLatex 播放MP4 等其他视频格式请自行嵌套处理，组件会进行九宫格元素的切换隐藏
->3. <font color="red">当使用ScratchableLatex 其所有相同的配置项优先级高于内部组件配置项</font>
+>3. <font color="red">当使用ScratchableLatex 其所有相同的配置项优先级高于内部组件配置项，且所有子级视频组件均采用此配置项</font>
 #### ScratchableLatex Attributes
 | 属性 | 类型 | 说明 | 默认值 | 可选值 |
 | --- | --- | --- | --- | --- |
