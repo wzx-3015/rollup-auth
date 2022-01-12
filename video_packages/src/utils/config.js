@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-06 17:19:42
- * @LastEditTime: 2022-01-06 17:26:35
+ * @LastEditTime: 2022-01-12 16:56:56
  * @LastEditors: @Xin (834529118@qq.com)
  */
 export const jessibucaConfig = () => {
@@ -36,4 +36,22 @@ export const validatorJessibucaConfig = (config) => {
   }
 
   return config
+}
+
+/**
+ * @description: 获取默认配置项
+ * @param {*}
+ * @return {*}
+ */
+export const getDefaultConfig = () => {
+  return {
+    isNotMute: false,
+    loadingText: 'loading...',
+    supportDblclickFullscreen: false,
+    operateBtns: {
+      play: false,
+      audio: false,
+      fullscreen: false,
+    }
+  }
 }

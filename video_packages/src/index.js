@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 09:39:04
- * @LastEditTime: 2022-01-10 16:00:29
+ * @LastEditTime: 2022-01-12 16:52:56
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import flvVideo from './video/flvVideo.vue';
@@ -16,7 +16,11 @@ export {
   ScratchableLatex,
 }
 
-const install = app => {}
+const install = app => {
+  app.component(flvVideo.name, flvVideo)
+  app.component(hlsVideo.name, hlsVideo)
+  app.component(ScratchableLatex.name, ScratchableLatex)
+}
 
 export default {
   install,

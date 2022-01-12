@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:56:53
- * @LastEditTime: 2022-01-11 17:57:10
+ * @LastEditTime: 2022-01-12 16:52:16
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -22,25 +22,22 @@
 import { ref, nextTick, watchEffect, computed, onUnmounted, onMounted, inject } from 'vue'
 import { loadJessibuca } from '../utils/index'
 import { scratchableLatexData } from '../injectKey'
-import { validatorJessibucaConfig } from '../utils/config'
+import { validatorJessibucaConfig, getDefaultConfig } from '../utils/config'
 import emitter from '../emitter/index'
 import jessibucaUrl from '../static/jessibuca/jessibuca.js'
 import decoderUrl from '../static/jessibuca/decoder.js'
+import { merge } from 'lodash-es'
 
 export default {
-  name: 'video-container',
+  name: 'flvVideo',
   props: {
     url: {
       type: String,
       required: true,
     },
-    jessibucaConfig: {
+    config: {
       type: Object,
       default: () => {},
-    },
-    show: {
-      type: Boolean,
-      default: true,
     },
     autoPlay: {
       type: Boolean,
@@ -59,26 +56,14 @@ export default {
     const flvVideoEl = ref(null)
 
     let videoShow = true
+    
+    const videoConfig = merge(props.config, { autoPlay: props.autoPlay }, parentData || {})
 
-    /**
-     * @description: 初始化config配置
-     * @param {*}
-     * @return {*}
-     */    
-    const initConfig = () => {
-      if (parentData) {
-        return parentData
-      }
-
-      return {
-        jessibucaConfig,
-        autoPlay
-      }
+    if (videoConfig.autoPlay) {
+      videoConfig.isNotMute = false
     }
 
-    const { autoPlay, jessibucaConfig } = initConfig()
-
-    console.log('========jessibucaConfig', jessibucaConfig)
+    const { autoPlay } = videoConfig
 
     /**
      * @description: 处理video class
@@ -109,6 +94,29 @@ export default {
       return el
     }
 
+    /**
+     * @description: 主动触发video事件处理
+     * @param {*}
+     * @return {*}
+     */    
+    const videoClick = {
+      play: url => {
+        if (!jessibuca || !videoShow) {
+          return
+        }
+
+        onePlayShow.value = false
+        jessibuca.play(url || props.url)
+      },
+      pause: () => {
+        jessibuca.close()
+      },
+      destroy: () => {
+        jessibuca.destroy()
+        jessibuca = null
+      }
+    }
+
     const initFlvVideo = async () => {
       const el = await isVideoEl(flvVideoEl.value)
 
@@ -122,7 +130,6 @@ export default {
 
       jessibucaExample.value = jessibuca = new window.Jessibuca({
         container: el,
-        loadingText: "加载中...",
         isFlv: true,
         debug: false,
         videoBuffer: 0.2,
@@ -130,19 +137,14 @@ export default {
         useWCS: true,
         decoder: decoderUrl,
         isNotMute: false,
-        supportDblclickFullscreen: true,
-        operateBtns: {
-          play: true,
-          audio: false,
-          fullscreen : false,
-        },
-        ...validatorJessibucaConfig(jessibucaConfig)
+        ...getDefaultConfig(),
+        ...validatorJessibucaConfig(videoConfig)
       })
 
       onePlayShow.value = !autoPlay
 
       jessibuca.on('load', () => {
-        autoPlay && handleVideoPlay(props.url)
+        autoPlay && videoClick.play(props.url)
       })
 
       jessibuca.on('play', () => {
@@ -151,7 +153,7 @@ export default {
 
       jessibuca.on('error', data => {
         // play 按钮不存在
-        if (!jessibucaConfig.operateBtns || !jessibucaConfig.operateBtns.play) {
+        if (!videoConfig.operateBtns || !videoConfig.operateBtns.play) {
           onePlayShow.value = true
         }
       })
@@ -165,48 +167,11 @@ export default {
       })
     }
 
-    /**
-     * @description: 播放
-     * @param {*}
-     * @return {*}
-     */
-    const handleVideoPlay = url => {
-      if (!jessibuca || !videoShow) {
-        return
-      }
-
-      onePlayShow.value = false
-      jessibuca.play(url || props.url)
-    }
-
     watchEffect(() => {
       if (jessibuca && jessibuca.isPlaying) {
-        handleVideoPlay(props.url)
+        videoClick.play(props.url)
       }
     })
-
-    const handleVideoResize = () => {
-      jessibuca && jessibuca.resize()
-    }
-
-    /**
-     * @description: 控制video出现隐藏
-     * @param {*}
-     * @return {*}
-     */  
-    const handleVideoShow = () => {
-      const style = window.getComputedStyle(flvVideoEl.value)
-
-      videoShow = style.visibility === 'visible'
-
-      if (!videoShow && jessibuca && jessibuca.isPlaying()) {
-        jessibuca.close()
-      }
-
-      if(videoShow && autoPlay && jessibuca && !jessibuca.isPlaying()) {
-        handleVideoPlay(props.url)
-      }
-    }
 
     onMounted(() => {
       loadJessibuca(jessibucaUrl).then(() => {
@@ -214,28 +179,46 @@ export default {
       })
     })
 
+    const emitterEvent = {
+      videoResize: () => {
+        jessibuca && jessibuca.resize()
+      },
+      handleVideoShow: () => {
+        const style = window.getComputedStyle(flvVideoEl.value)
+
+        videoShow = style.visibility === 'visible'
+
+        if (!videoShow && jessibuca && jessibuca.isPlaying()) {
+          videoClick.pause()
+        }
+
+        if(videoShow && autoPlay && jessibuca && !jessibuca.isPlaying()) {
+          videoClick.play(props.url)
+        }
+      }
+    }
+
     onUnmounted(() => {
-      jessibuca.destroy()
-      jessibuca = null
+      videoClick.destroy()
       jessibucaExample.value = null
 
-      emitter.off('videoResize', handleVideoResize)
-      emitter.off('videShow', handleVideoShow)
+      emitter.off('videoResize', emitterEvent.videoResize)
+      emitter.off('videShow', emitterEvent.handleVideoShow)
     })
 
     if (parentData) {
-      emitter.on('videoResize', handleVideoResize)
-      emitter.on('videShow', handleVideoShow)
+      emitter.on('videoResize', emitterEvent.videoResize)
+      emitter.on('videShow', emitterEvent.handleVideoShow)
     }
 
     return {
       flvVideoEl,
       jessibuca: jessibucaExample,
       videoClass,
-      handleVideoResize,
+      handleVideoResize: emitterEvent.videoResize,
       slotContainerShow,
       onePlayShow,
-      handleVideoPlay,
+      handleVideoPlay: videoClick.play,
     }
   }
 }

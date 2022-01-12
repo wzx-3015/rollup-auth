@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-06 11:31:30
- * @LastEditTime: 2022-01-08 11:48:38
+ * @LastEditTime: 2022-01-12 16:52:30
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -23,6 +23,7 @@ import { scratchableLatexData } from '../injectKey'
 import emitter from '../emitter/index'
 
 export default {
+  name: 'scratchableLatex',
   expose: ['setScratchableLatex'],
   props: {
     defaultNum: {
@@ -33,15 +34,14 @@ export default {
       type: Boolean,
       default: false
     },
-    jessibucaConfig: {
+    config: {
       type: Object,
       default: () => {}
     }
   },
   setup(props, { slots }) {
     provide(scratchableLatexData, {
-      type: 'flv',
-      jessibucaConfig: props.jessibucaConfig,
+      ...props.config,
       autoPlay: props.autoPlay
     })
 

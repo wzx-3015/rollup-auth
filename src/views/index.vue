@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:47:28
- * @LastEditTime: 2022-01-10 16:12:40
+ * @LastEditTime: 2022-01-12 16:53:41
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -11,7 +11,7 @@
     退出登录
   </el-button> -->
   <div style="height: 900px">
-    <ScratchableLatex class="video-container" :autoPlay="false" :defaultNum="2" :jessibucaConfig="{ operateBtns: { play: true } }" ref="videoContainer">
+    <ScratchableLatex class="video-container" :autoPlay="false" :defaultNum="2" :config="{ operateBtns: { play: true } }" ref="videoContainer">
       <div>
         <!-- <flvVideo :url="videoUrl"></flvVideo> -->
         <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8"></hlsVideo>
@@ -38,7 +38,7 @@
         <flvVideo :url="videoUrl"></flvVideo>
       </div>
       <div>
-        <flvVideo :url="videoUrl"></flvVideo>
+        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8"></hlsVideo>
       </div>
       <div>
         <flvVideo :url="videoUrl"></flvVideo>
@@ -49,17 +49,6 @@
       <div>
         <flvVideo :url="videoUrl"></flvVideo>
       </div>
-      <!-- <div>
-        <flvVideo :url="videoUrl"></flvVideo>
-      </div> -->
-      <!-- <flvVideo :url="videoUrl"></flvVideo>
-      <flvVideo :url="videoUrl"></flvVideo>
-      <flvVideo :url="videoUrl"></flvVideo>
-      <flvVideo :url="videoUrl"></flvVideo>
-      <flvVideo :url="videoUrl"></flvVideo>
-      <flvVideo :url="videoUrl"></flvVideo>
-      <flvVideo :url="videoUrl"></flvVideo>
-      <flvVideo :url="videoUrl"></flvVideo> -->
     </ScratchableLatex>
   </div>
 
@@ -77,7 +66,7 @@
 <script>
 // import { useDStore } from '../../packages/lib/index'
 import { flvVideo, ScratchableLatex, hlsVideo } from 'dfsj-video'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 export default {
   components: { 
@@ -100,10 +89,6 @@ export default {
     const handleSwitch = num => {
       videoContainer.value.setScratchableLatex(num)
     }
-
-    onMounted(() => {
-      console.log(flvVideoDemo.value)
-    })
 
     return {
       handleLoGout,

@@ -2,43 +2,50 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-11 18:04:16
+ * @LastEditTime: 2022-01-12 16:57:09
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
-  <div class="video-container">
-    <div class="video--play--loading" v-show="videLoading || playBtnShow">
-      <div class="loading-container" v-show="videLoading">
+  <div class="video-container" @dblclick="handleHslDbclick" ref="hlsVideoFullScreenEl">
+    <div class="video--play--loading" v-if="videoStatus.loading || videoStatus.centerPlay">
+      <div class="loading-container" v-show="videoStatus.loading">
         <span><i class="iconfont icon-loading1"></i></span>
         <p>{{ loadingText }}</p>
       </div>
 
-      <div class="video--play--btn" v-show="playBtnShow">
+      <div class="video--play--btn" v-show="videoStatus.centerPlay">
         <i class="iconfont icon-bofang"></i>
       </div>
     </div>
-    <div class="video--controls--container" v-if="videoControlsShow">
-      <div class="play--btn">
-        <i class="iconfont icon-bofang1"></i>
+    <div class="video--controls--container" v-if="controlsBtnShow.show">
+      <div class="play--btn" v-show="controlsBtnShow.play" @dblclick="event => event.stopPropagation()">
+        <i class="iconfont" :class="[videoStatus.play ? 'icon-zanting' : 'icon-bofang1']" @click="handleClickVideoPlay"></i>
       </div>
       <div class="progress--bar"></div>
 
-      <div class="audio--btn"></div>
-      <div class="screenshot--btn">
-        <i class="iconfont icon-quanping"></i>
+      <div class="audio--btn" v-show="controlsBtnShow.audio" @dblclick="event => event.stopPropagation()">
+        <i class="iconfont" @click="handleMutedClick" :class="[!videoStatus.muted ? 'icon-jingyin' : 'icon-shengyin']"></i>
+      </div>
+      <div class="screenshot--btn" v-show="controlsBtnShow.fullscreen" @dblclick="event => event.stopPropagation()">
+        <i class="iconfont" @click="handleFullScreenClick" :class="[videoStatus.fullscreen ? 'icon-tuichuquanping' :'icon-quanping']"></i>
       </div>
     </div>
 
     <div class="slot-canvas-layer" v-if="slotContainerShow">
-
+      <slot />
     </div>
 
-    <video class="hls-video-el" :muted="!autoPlay" ref="hlsVideoEl"></video>
+    <video class="hls-video-el" :muted="!videoStatus.muted" ref="hlsVideoEl"></video>
   </div>
 </template>
 <script>
 import Hls from 'hls.js'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, inject, reactive } from 'vue'
+import { launchFullscreen, exitFullscreen } from '../utils/index'
+import { getDefaultConfig } from '../utils/config'
+import { scratchableLatexData } from '../injectKey'
+import { merge } from 'lodash-es'
+import emitter from '../emitter/index'
 
 export default {
   name: 'hlsVideo',
@@ -47,85 +54,241 @@ export default {
       type: String,
       required: true,
     },
-    jessibucaConfig: {
+    config: {
       type: Object,
-      default: () => {},
-    },
-    show: {
-      type: Boolean,
-      default: true,
+      default: () => getDefaultConfig()
     },
     autoPlay: {
       type: Boolean,
       default: false
     },
-    loadingText: {
-      type: String,
-      default: "loading..."
-    },
-    operateBtns: {
-      type: Object,
-      default: () => {
-        return {
-          play: true,
-          audio: false,
-          screenshot: false,
-        }
-      },
-    }
   },
   setup(props, { slots }) {
+    const parentData = inject(scratchableLatexData)
     const slotContainerShow = ref(slots.default && slots.default().length ? true : false)
-    const hlsVideoEl = ref(null)
+    const videoConfig = merge(getDefaultConfig(), props.config, { autoPlay: props.autoPlay }, parentData || {})
 
-    const videLoading = ref(false)
-    const playBtnShow = ref(false)
+    console.log(videoConfig)
 
-    const videoControlsShow = computed(() => {
-      const { play, audio, screenshot } = props.operateBtns
+    if (videoConfig.autoPlay) {
+      videoConfig.isNotMute = false
+    }
 
-      return play || audio || screenshot
+    const { play: platBtn, audio: audioBtn, fullscreen: fullscreenBtn} = videoConfig.operateBtns
+
+    // video 控制台按钮状态
+    const controlsBtnShow = reactive({
+      play: videoConfig.operateBtns.play,
+      audio: videoConfig.operateBtns.audio,
+      fullscreen: videoConfig.operateBtns.fullscreen,
+      show: platBtn || audioBtn || fullscreenBtn,
     })
 
+    // video 状态
+    const videoStatus = reactive({
+      play: false,
+      muted: videoConfig.isNotMute,
+      fullScreen: false,
+      loading: false,
+      centerPlay: !videoConfig.autoPlay && !videoConfig.operateBtns.play ? true : false
+    })
+
+    const hlsVideoEl = ref(null)
+    const hlsVideoFullScreenEl = ref(null)
+
+    let stopVideo = false
+    let videoShow = true
+
+    /**
+     * @description: 主动触发video事件处理
+     * @param {*}
+     * @return {*}
+     */    
+    const videoClick = {
+      play: () => {
+        if (!props.url || !videoShow) {
+          return
+        }
+        
+        hlsVideoEl.value.play();
+      },
+      pause: () => {
+        hlsVideoEl.value.pause();
+      },
+      destroy: () => {
+        hls.destroy()
+        hls = null
+      }
+    }
+
+    /**
+     * @description: addEventListener监听video事件处理
+     * @param {*}
+     * @return {*}
+     */    
+    const videoLinstener = {
+      play: () => {
+        if (stopVideo) {
+          hls.startLoad()
+        }
+
+        stopVideo = false
+        videoStatus.play = true
+      },
+      pause: () => {
+        hls.stopLoad()
+        stopVideo = true
+        videoStatus.play = false
+      }
+    }
+
+    const emitterEvent = {
+      handleVideoShow: () => {
+        const style = window.getComputedStyle(hlsVideoEl.value)
+
+        videoShow = style.visibility === 'visible'
+
+        if (videoShow && !hls) {
+          initHlsVideo()
+        }
+
+        if (!videoShow) {
+          videoClick.destroy()
+        }
+      }
+    }
+
     let hls = null
-
     const initHlsVideo = () => {
-      if (Hls.isSupported()) {
-        hls = new Hls()
+      return new Promise((resolve, reject) => {
+        if (Hls.isSupported()) {
+          hls = new Hls({
+            // maxBufferLength: 10,
+            // maxBufferSize: 20 * 1000 * 1000,
+            // maxLoadingDelay: 2,
+            // maxMaxBufferLength: 10,
+            // maxBufferSize: 10*1000*1000,
+          })
+  
+          hls.attachMedia(hlsVideoEl.value)
+  
+          hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+            hls.loadSource(props.url)
+          })
+  
+          // 播放异常事件
+          hls.on(Hls.Events.ERROR, (event, data) => {
+            console.log('event', event)
+            console.log('data', data)
+  
+            if (data.fatal) {
+              switch(data.type) {
+              case Hls.ErrorTypes.NETWORK_ERROR:
+              // try to recover network error
+                console.log("fatal network error encountered, try to recover");
+                hls.startLoad();
+                break;
+              case Hls.ErrorTypes.MEDIA_ERROR:
+                console.log("fatal media error encountered, try to recover");
+                hls.recoverMediaError();
+                break;
+              default:
+              // cannot recover
+                hls.destroy();
+                break;
+              }
+            }
+          });
+  
+          hlsVideoEl.value.addEventListener('play', videoLinstener.play);
+  
+          hlsVideoEl.value.addEventListener('pause', videoLinstener.pause)
+  
+          videoConfig.autoPlay && videoClick.play();
 
+          resolve(Hls)
+        }
+      })
+    }
 
-        hls.attachMedia(hlsVideoEl.value)
-
-        hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-          hls.loadSource('http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8')
-
-          console.log("video and hls.js are now bound together !");
-        })
-
-        hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-          conosle.log(event)
-          console.log("manifest loaded, found " + data.levels.length + " quality level");
-        });
-
-        hls.on(Hls.Events.ERROR, (event, data) => {
-          // console.log('event', event)
-          // console.log('data', data)
-        });
-
-        props.autoPlay && hlsVideoEl.value.play();
+    const fullscreenchange = () => {
+      if (document.fullscreenElement) {
+        videoStatus.fullScreen = true
+      } else {
+        videoStatus.fullScreen = false
       }
     }
 
     onMounted(() => {
       initHlsVideo()
+
+      hlsVideoFullScreenEl.value.addEventListener('fullscreenchange', fullscreenchange)
+
+      emitter.on('videShow', emitterEvent.handleVideoShow)
     })
+
+    onUnmounted(() => {
+      videoClick.destroy()
+      hlsVideoFullScreenEl.value.removeEventListener('fullscreenchange', fullscreenchange)
+      emitter.off('videShow', emitterEvent.handleVideoShow)
+    }) 
+
+    /**
+     * @description: 视频播放按钮点击事件
+     * @param {*}
+     * @return {*}
+     */    
+    const handleClickVideoPlay = () => {
+      if (videoStatus.play) {
+        videoClick.pause()
+      } else {
+        videoClick.play()
+      }
+    }
+
+    /**
+     * @description: 音频按钮点击事件
+     * @param {*}
+     * @return {*}
+     */  
+    const handleMutedClick = () => {
+      videoStatus.muted = !videoStatus.muted
+    }
+
+    /**
+     * @description: 全屏按钮点击事件
+     * @param {*}
+     * @return {*}
+     */
+    const handleFullScreenClick = () => {
+      if (!videoStatus.fullScreen) {
+        launchFullscreen(hlsVideoFullScreenEl.value)
+      } else {
+        exitFullscreen()
+      }
+    }
+
+    /**
+     * @description: 双击事件
+     * @param {*}
+     * @return {*}
+     */    
+    const handleHslDbclick = () => {
+      if (videoConfig.supportDblclickFullscreen) {
+        handleFullScreenClick()
+      }
+    }
 
     return {
       hlsVideoEl,
-      videLoading,
-      playBtnShow,
-      videoControlsShow,
+      controlsBtnShow,
       slotContainerShow,
+      hlsVideoFullScreenEl,
+      videoStatus,
+      handleFullScreenClick,
+      handleHslDbclick,
+      handleClickVideoPlay,
+      handleMutedClick,
     }
   },
 }
@@ -205,7 +368,7 @@ export default {
     z-index: 3;
 
     > div{
-      flex-basis: 20px;
+      flex-basis: 26px;
       text-align: center;
     }
 
