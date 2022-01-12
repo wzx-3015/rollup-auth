@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-12 17:58:45
+ * @LastEditTime: 2022-01-12 18:03:44
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -40,7 +40,7 @@
 </template>
 <script>
 import Hls from 'hls.js'
-import { ref, onMounted, onUnmounted, inject, reactive } from 'vue'
+import { ref, onMounted, onUnmounted, inject, reactive, watchEffect } from 'vue'
 import { launchFullscreen, exitFullscreen } from '../utils/index'
 import { getDefaultConfig } from '../utils/config'
 import { scratchableLatexData } from '../injectKey'
@@ -208,7 +208,7 @@ export default {
     }
 
     let hls = null
-    const initHlsVideo = () => {
+    const initHlsVideo = url => {
       return new Promise((resolve, reject) => {
         if (Hls.isSupported()) {
           hls = new Hls({
@@ -222,7 +222,7 @@ export default {
           hls.attachMedia(hlsVideoEl.value)
   
           hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-            hls.loadSource(props.url)
+            hls.loadSource(url)
           })
   
           // 播放异常事件
@@ -264,7 +264,12 @@ export default {
     }
 
     onMounted(() => {
-      initHlsVideo()
+      watchEffect(() => {
+        if (hls) {
+          videoClick.destroy()
+        }
+        initHlsVideo(props.url)
+      })
 
       hlsVideoFullScreenEl.value.addEventListener('fullscreenchange', fullscreenchange)
 
