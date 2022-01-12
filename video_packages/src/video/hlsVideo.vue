@@ -2,19 +2,19 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-12 16:57:09
+ * @LastEditTime: 2022-01-12 17:04:53
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
   <div class="video-container" @dblclick="handleHslDbclick" ref="hlsVideoFullScreenEl">
     <div class="video--play--loading" v-if="videoStatus.loading || videoStatus.centerPlay">
-      <div class="loading-container" v-show="videoStatus.loading">
-        <span><i class="iconfont icon-loading1"></i></span>
+      <div class="loading-container" v-show="videoStatus.loading" @dblclick="event => event.stopPropagation()">
+        <span ><i class="iconfont icon-loading1"></i></span>
         <p>{{ loadingText }}</p>
       </div>
 
-      <div class="video--play--btn" v-show="videoStatus.centerPlay">
-        <i class="iconfont icon-bofang"></i>
+      <div class="video--play--btn" @dblclick="event => event.stopPropagation()" v-show="videoStatus.centerPlay">
+        <i class="iconfont icon-bofang" @click="handleClickVideoPlay"></i>
       </div>
     </div>
     <div class="video--controls--container" v-if="controlsBtnShow.show">
@@ -68,8 +68,6 @@ export default {
     const slotContainerShow = ref(slots.default && slots.default().length ? true : false)
     const videoConfig = merge(getDefaultConfig(), props.config, { autoPlay: props.autoPlay }, parentData || {})
 
-    console.log(videoConfig)
-
     if (videoConfig.autoPlay) {
       videoConfig.isNotMute = false
     }
@@ -88,9 +86,9 @@ export default {
     const videoStatus = reactive({
       play: false,
       muted: videoConfig.isNotMute,
-      fullScreen: false,
+      fullscreen: false,
       loading: false,
-      centerPlay: !videoConfig.autoPlay && !videoConfig.operateBtns.play ? true : false
+      centerPlay: !videoConfig.autoPlay ? true : false
     })
 
     const hlsVideoEl = ref(null)
@@ -133,11 +131,13 @@ export default {
         }
 
         stopVideo = false
+        videoStatus.centerPlay = false
         videoStatus.play = true
       },
       pause: () => {
         hls.stopLoad()
         stopVideo = true
+        videoStatus.centerPlay = true
         videoStatus.play = false
       }
     }
@@ -213,9 +213,9 @@ export default {
 
     const fullscreenchange = () => {
       if (document.fullscreenElement) {
-        videoStatus.fullScreen = true
+        videoStatus.fullscreen = true
       } else {
-        videoStatus.fullScreen = false
+        videoStatus.fullscreen = false
       }
     }
 

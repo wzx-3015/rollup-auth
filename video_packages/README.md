@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-10-12 20:32:08
- * @LastEditTime: 2022-01-12 16:58:53
+ * @LastEditTime: 2022-01-12 17:01:35
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 # 视频九宫格组件 支持flv、m3u8 基于hls.js、jessibuca.js二次开发
@@ -102,7 +102,7 @@ import { flvVideo, ScratchableLatex, hlsVideo } from 'dfsj-video'
 
 | 属性 | 类型 | 说明 | 默认值 | 可选值 |
 | --- | --- | --- | --- | --- |
-| isNotMute | Boolean | 是否开启声音 | false/不开启 | false/true |
+| isNotMute | Boolean | 是否开启声音 | false/关闭 | false/true |
 | loadingText | String | 加载文案 | loading... |  |
 | supportDblclickFullscreen | Boolean | 是否支持屏幕的双击事件，触发全屏，取消全屏事件 | false | false/true |
 | operateBtns | Object | 配置操作按钮 | { play: false, audio: false, fullscreen: false, } |  |

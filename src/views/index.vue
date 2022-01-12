@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:47:28
- * @LastEditTime: 2022-01-12 16:53:41
+ * @LastEditTime: 2022-01-12 17:01:12
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -11,7 +11,7 @@
     退出登录
   </el-button> -->
   <div style="height: 900px">
-    <ScratchableLatex class="video-container" :autoPlay="false" :defaultNum="2" :config="{ operateBtns: { play: true } }" ref="videoContainer">
+    <ScratchableLatex class="video-container" :autoPlay="false" :defaultNum="2" :config="{ isNotMute: true, operateBtns: { play: true, audio: true, fullscreen: true } }" ref="videoContainer">
       <div>
         <!-- <flvVideo :url="videoUrl"></flvVideo> -->
         <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8"></hlsVideo>
