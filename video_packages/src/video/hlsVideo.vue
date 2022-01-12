@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-12 17:10:11
+ * @LastEditTime: 2022-01-12 17:58:45
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -88,7 +88,7 @@ export default {
       muted: videoConfig.isNotMute,
       fullscreen: false,
       loading: false,
-      centerPlay: !videoConfig.autoPlay ? true : false
+      centerPlay: false
     })
 
     const hlsVideoEl = ref(null)
@@ -114,6 +114,7 @@ export default {
         hlsVideoEl.value.pause();
       },
       destroy: () => {
+        videoStatus.centerPlay = false
         hls.destroy()
         hls = null
       }
@@ -139,6 +140,32 @@ export default {
         stopVideo = true
         videoStatus.centerPlay = true
         videoStatus.play = false
+      },
+      ended: () => {
+        videoStatus.centerPlay = true
+        videoStatus.play = false
+        stopVideo = false
+      },
+      loadedmetadata: () => {
+        videoStatus.loading = false;
+
+        if (!videoStatus.play && !videoConfig.autoPlay) {
+          videoStatus.centerPlay = true
+        } else {
+          videoStatus.centerPlay = false
+        }
+      },
+      loadstart: () => {
+        videoStatus.loading = true;
+      },
+      canplay: () => {
+        console.log('canplay')
+      },
+      waiting: () => {
+        console.log('waiting')
+      },
+      stalled: () => {
+        console.log(stalled)
       }
     }
 
@@ -156,6 +183,28 @@ export default {
           videoClick.destroy()
         }
       }
+    }
+
+    /**
+     * @description: 加载事件
+     * @param {*}
+     * @return {*}
+     */    
+    const handAddEventLinstener = el => {
+      Object.entries(videoLinstener).forEach(([ eventName, evnetF ]) => {
+        el.addEventListener(eventName, evnetF)
+      })
+    }
+
+    /**
+     * @description: 卸载事件
+     * @param {*}
+     * @return {*}
+     */    
+    const handleReomveEventLinstener = el => {
+      Object.entries(videoLinstener).forEach(([ eventName, evnetF ]) => {
+        el.removeEventListener(eventName, evnetF)
+      })
     }
 
     let hls = null
@@ -178,12 +227,9 @@ export default {
   
           // 播放异常事件
           hls.on(Hls.Events.ERROR, (event, data) => {
-            console.log('event', event)
-            console.log('data', data)
-  
             if (data.fatal) {
               switch(data.type) {
-              case Hls.ErrorTypes.NETWORK_ERROR:
+              case Hls.ErrorTypes.NETWORK_ERROR: // 网络异常
               // try to recover network error
                 console.log("fatal network error encountered, try to recover");
                 hls.startLoad();
@@ -194,15 +240,13 @@ export default {
                 break;
               default:
               // cannot recover
-                hls.destroy();
+                videoClick.destroy()
                 break;
               }
             }
           });
-  
-          hlsVideoEl.value.addEventListener('play', videoLinstener.play);
-  
-          hlsVideoEl.value.addEventListener('pause', videoLinstener.pause)
+
+          handAddEventLinstener(hlsVideoEl.value)
   
           videoConfig.autoPlay && videoClick.play();
 
@@ -229,6 +273,7 @@ export default {
 
     onUnmounted(() => {
       videoClick.destroy()
+      handleReomveEventLinstener(hlsVideoEl.value)
       hlsVideoFullScreenEl.value.removeEventListener('fullscreenchange', fullscreenchange)
       emitter.off('videShow', emitterEvent.handleVideoShow)
     }) 
@@ -281,6 +326,7 @@ export default {
 
     return {
       hlsVideoEl,
+      loadingText: videoConfig.loadingText,
       controlsBtnShow,
       slotContainerShow,
       hlsVideoFullScreenEl,
