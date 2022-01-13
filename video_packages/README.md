@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-10-12 20:32:08
- * @LastEditTime: 2022-01-13 13:27:58
+ * @LastEditTime: 2022-01-13 15:26:21
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 # 视频九宫格组件 支持flv、m3u8 基于hls.js、jessibuca.js二次开发
@@ -23,7 +23,7 @@ import 'grid-video/dist/style/index.css'
 ```
 _________________
 ## hlsVideo 播放 m3u8 视频
-
+> 组件可嵌套元素，其元素为视频上方layer层，该层级低于控制栏层级，loading层级
 #### hlsVideo Attributes
 | 属性 | 类型 | 说明 | 默认值 | 可选值 | 是否必填 |
 | --- | --- | --- | --- | --- | --- |

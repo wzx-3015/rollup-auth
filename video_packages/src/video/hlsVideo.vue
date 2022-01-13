@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-13 15:23:03
+ * @LastEditTime: 2022-01-13 15:32:30
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -381,18 +381,13 @@ export default {
   .video--play--loading {
     position: absolute;
     z-index: 4;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: fade(#000, 10%);
+    display: block;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 
     .loading-container,
     .video--play--btn{
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
       color: fade(#fff, 70%);
       i.iconfont {
         display: inline-block;

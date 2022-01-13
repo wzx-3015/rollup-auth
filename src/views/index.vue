@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:47:28
- * @LastEditTime: 2022-01-13 15:23:11
+ * @LastEditTime: 2022-01-13 15:28:17
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -35,13 +35,17 @@
         <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv7_2/index.m3u8"></hlsVideo>
       </div>
       <div>
-        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv8_2/index.m3u8"></hlsVideo>
+        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv8_2/index.m3u8">
+          <button @click="handleceshi">========</button>
+        </hlsVideo>
       </div>
       <!-- <div>
         <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv10_2/index.m3u8"></hlsVideo>
       </div> -->
       <div>
-        <flvVideo :url="videoUrl"></flvVideo>
+        <flvVideo :url="videoUrl">
+          <button @click="handleceshi">========</button>
+        </flvVideo>
       </div>
       <div>
         <flvVideo :url="videoUrl"></flvVideo>
@@ -99,6 +103,10 @@ export default {
       console.log('setTimeout===============')
     }, 6000)
 
+    const handleceshi = () => {
+      alert('===')
+    }
+
     return {
       handleLoGout,
       videoUrl,
@@ -106,6 +114,7 @@ export default {
       videoContainer,
       handleSwitch,
       demoUlr,
+      handleceshi,
     }
   }
 }
