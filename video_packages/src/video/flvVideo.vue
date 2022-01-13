@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:56:53
- * @LastEditTime: 2022-01-13 15:21:36
+ * @LastEditTime: 2022-01-13 15:35:28
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -251,7 +251,6 @@ export default {
 .flv-video-container {
   box-sizing: border-box;
   background-color: #000;
-  user-select: none;
   width: 100%;
   height: 100%;
   display: inherit;
