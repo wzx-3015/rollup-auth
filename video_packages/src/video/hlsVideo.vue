@@ -2,11 +2,11 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-13 15:34:08
+ * @LastEditTime: 2022-01-13 17:02:47
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
-  <div class="video-container" @dblclick="handleHslDbclick" ref="hlsVideoFullScreenEl">
+  <div class="video-container" @dblclick="handleHslDbclick" ref="hlsVideoContainerEl">
     <div class="video--play--loading" v-if="videoStatus.loading || videoStatus.centerPlay || videoStatus.error">
       <div class="loading-container" v-show="videoStatus.loading" @dblclick="event => event.stopPropagation()">
         <span ><i class="iconfont icon-loading1"></i></span>
@@ -21,7 +21,7 @@
         视频资源异常
       </div>
     </div>
-    <div class="video--controls--container" v-if="controlsBtnShow.show">
+    <div class="video--controls--container" :class="[controlsBtnShow.show ? null : 'none']">
       <div class="play--btn" v-show="controlsBtnShow.play" @dblclick="event => event.stopPropagation()">
         <i class="iconfont" :class="[videoStatus.play ? 'icon-zanting' : 'icon-bofang1']" @click="handleClickVideoPlay"></i>
       </div>
@@ -48,7 +48,7 @@ import { ref, onMounted, onUnmounted, inject, reactive, watchEffect } from 'vue'
 import { launchFullscreen, exitFullscreen, isDOMVisible, handleEmitterEvent, handleDOMEventLinsteners, handleDOMEventLinstener } from '../utils/index'
 import { getDefaultConfig } from '../utils/config'
 import { scratchableLatexData } from '../injectKey'
-import { merge } from 'lodash-es'
+import { merge, throttle } from 'lodash-es'
 
 export default {
   name: 'hlsVideo',
@@ -96,10 +96,11 @@ export default {
     })
 
     const hlsVideoEl = ref(null)
-    const hlsVideoFullScreenEl = ref(null)
+    const hlsVideoContainerEl = ref(null)
 
     let stopVideo = false
     let videoShowStatus = false
+    let controlsTimer = null
 
     /**
      * @description: 主动触发video事件处理
@@ -183,7 +184,7 @@ export default {
 
     const emitterEvent = {
       videoShow: () => {
-        videoShowStatus = isDOMVisible(hlsVideoFullScreenEl)
+        videoShowStatus = isDOMVisible(hlsVideoContainerEl)
 
         if (videoShowStatus && !hls) {
           initHlsVideo(props.url)
@@ -250,17 +251,35 @@ export default {
       })
     }
 
-    const fullscreenchange = () => {
-      if (document.fullscreenElement) {
-        videoStatus.fullscreen = true
-      } else {
-        videoStatus.fullscreen = false
-      }
-    }
 
     const emitterEventLinstener = handleEmitterEvent(emitterEvent)
 
-    const fullscreenchangeEvent = handleDOMEventLinstener('fullscreenchange', fullscreenchange, hlsVideoFullScreenEl)
+    const hlsVideoContainerEvent = {
+      fullscreenchange: () => {
+        if (document.fullscreenElement) {
+          videoStatus.fullscreen = true
+        } else {
+          videoStatus.fullscreen = false
+        }
+      },
+      mousemove: throttle(() => {
+        // 处理控制栏的出现隐藏
+        if (!videoStatus.play) {
+          return
+        }
+
+        if (platBtn || audioBtn || fullscreenBtn) {
+          controlsBtnShow.show = true
+          controlsTimer && clearTimeout(controlsTimer)
+  
+          controlsTimer = setTimeout(() => {
+            controlsBtnShow.show = false
+          }, 3000)
+        }
+      }, 500)
+    }
+
+    const hlsVideoContainerEventLinstener = handleDOMEventLinsteners(hlsVideoContainerEvent, hlsVideoContainerEl)
 
     watchEffect(() => {
       if (hls) {
@@ -270,26 +289,26 @@ export default {
         initHlsVideo(props.url)
       }
     })
+
     onMounted(() => {
-      hlsVideoFullScreenEl.value.oncontextmenu = e => {
+      hlsVideoContainerEl.value.oncontextmenu = e => {
         if (e.button === 2) {
           e.preventDefault()
         } else {
           return tue
         }
       }
-      
 
       videoEventLinstener.on()
       emitterEventLinstener.on()
-      fullscreenchangeEvent.on()
+      hlsVideoContainerEventLinstener.on()
     })
 
     onUnmounted(() => {
       videoClick.destroy()
       videoEventLinstener.off()
       emitterEventLinstener.off()
-      fullscreenchangeEvent.off()
+      hlsVideoContainerEventLinstener.off()
     }) 
 
     /**
@@ -321,7 +340,7 @@ export default {
      */
     const handleFullScreenClick = () => {
       if (!videoStatus.fullscreen) {
-        launchFullscreen(hlsVideoFullScreenEl.value)
+        launchFullscreen(hlsVideoContainerEl.value)
       } else {
         exitFullscreen()
       }
@@ -343,7 +362,7 @@ export default {
       loadingText: videoConfig.loadingText,
       controlsBtnShow,
       slotContainerShow,
-      hlsVideoFullScreenEl,
+      hlsVideoContainerEl,
       videoStatus,
       handleFullScreenClick,
       handleHslDbclick,
@@ -434,6 +453,12 @@ export default {
     display: flex;
     align-items: center;
     z-index: 5;
+    transition: all 0.2s;
+
+    &.none {
+      height: 0;
+      opacity: 0;
+    }
 
     > div{
       flex-basis: 26px;
@@ -462,7 +487,7 @@ export default {
 
   .hls-video-el {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 0.5px);
   }
 }
 </style>
