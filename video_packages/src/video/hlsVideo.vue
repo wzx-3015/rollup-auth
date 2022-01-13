@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-12 18:03:44
+ * @LastEditTime: 2022-01-13 09:45:07
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -115,7 +115,7 @@ export default {
       },
       destroy: () => {
         videoStatus.centerPlay = false
-        hls.destroy()
+        hls && hls.destroy()
         hls = null
       }
     }
@@ -169,14 +169,18 @@ export default {
       }
     }
 
+    const isDOMShow = () => {
+      const style = window.getComputedStyle(hlsVideoEl.value)
+
+      return style.visibility === 'visible'
+    }
+
     const emitterEvent = {
       handleVideoShow: () => {
-        const style = window.getComputedStyle(hlsVideoEl.value)
-
-        videoShow = style.visibility === 'visible'
+        videoShow = isDOMShow()
 
         if (videoShow && !hls) {
-          initHlsVideo()
+          initHlsVideo(props.url)
         }
 
         if (!videoShow) {
@@ -268,7 +272,9 @@ export default {
         if (hls) {
           videoClick.destroy()
         }
-        initHlsVideo(props.url)
+        if (isDOMShow()) {
+          initHlsVideo(props.url)
+        }
       })
 
       hlsVideoFullScreenEl.value.addEventListener('fullscreenchange', fullscreenchange)
