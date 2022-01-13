@@ -112,11 +112,11 @@ import 'grid-video/dist/style/index.css'
 ## 使用方式
 ```
 {
-  isNotMute: true,
+  isNotMute: false,
   loadingText: 'loading...',
   supportDblclickFullscreen: false,
   operateBtns: {
-    play: true,
+    play: false,
     audio: false,
     fullscreen: false,
   }
