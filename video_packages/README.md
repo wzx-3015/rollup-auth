@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-10-12 20:32:08
- * @LastEditTime: 2022-01-13 15:26:21
+ * @LastEditTime: 2022-01-13 15:58:57
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 # 视频九宫格组件 支持flv、m3u8 基于hls.js、jessibuca.js二次开发
@@ -53,7 +53,7 @@ _________________
 
 #### ScratchableLatex Methods
 | 名称 | 说明 | 参数类型 | 可选值 |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | setScratchableLatex | 设置展示视频数量 | Number | 2 / 4 / 9 |
 #### 使用方式
 ```
