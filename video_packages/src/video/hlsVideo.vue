@@ -2,12 +2,12 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-13 11:25:47
+ * @LastEditTime: 2022-01-13 11:44:10
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
   <div class="video-container" @dblclick="handleHslDbclick" ref="hlsVideoFullScreenEl">
-    <div class="video--play--loading" v-if="videoStatus.loading || videoStatus.centerPlay">
+    <div class="video--play--loading" v-if="videoStatus.loading || videoStatus.centerPlay || videoStatus.error">
       <div class="loading-container" v-show="videoStatus.loading" @dblclick="event => event.stopPropagation()">
         <span ><i class="iconfont icon-loading1"></i></span>
         <p>{{ loadingText }}</p>
@@ -15,6 +15,10 @@
 
       <div class="video--play--btn" @dblclick="event => event.stopPropagation()" v-show="videoStatus.centerPlay">
         <i class="iconfont icon-bofang" @click="handleClickVideoPlay"></i>
+      </div>
+
+      <div class="video--error" v-show="videoStatus.error">
+        视频资源异常
       </div>
     </div>
     <div class="video--controls--container" v-if="controlsBtnShow.show">
@@ -87,7 +91,8 @@ export default {
       muted: videoConfig.isNotMute,
       fullscreen: false,
       loading: false,
-      centerPlay: false
+      centerPlay: false,
+      error: false,
     })
 
     const hlsVideoEl = ref(null)
@@ -134,6 +139,7 @@ export default {
         videoStatus.centerPlay = false
         videoStatus.play = true
         videoStatus.loading = false
+        videoStatus.error = false
       },
       pause: () => {
         hls.stopLoad()
@@ -223,6 +229,7 @@ export default {
                 break;
               default:
               // cannot recover
+                videoStatus.error = true
                 videoClick.destroy()
                 break;
               }
@@ -388,6 +395,17 @@ export default {
       i {
         cursor: pointer;
       }
+    }
+
+    .video--error {
+      color: #F56C6C;
+      text-align: center;
+      display: inline-block;
+      position: absolute;
+      left: 50%;
+      top: 5%;
+      transform: translate(-50%, 0);
+      z-index: 9;
     }
   }
 

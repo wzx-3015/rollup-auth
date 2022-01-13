@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:56:53
- * @LastEditTime: 2022-01-13 11:20:53
+ * @LastEditTime: 2022-01-13 11:50:36
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -10,6 +10,10 @@
     <div ref="flvVideoEl" class="flv-video-el">
       <div class="slot-canvas-layer" v-if="slotContainerShow">
         <slot />
+      </div>
+
+      <div class="video--error" v-show="videoError">
+        视频资源异常
       </div>
 
       <div class="one-play" v-if="onePlayShow" @click="handleVideoPlay()">
@@ -48,6 +52,7 @@ export default {
     const slotContainerShow = ref(slots.default && slots.default().length ? true : false)
     const onePlayShow = ref(false)
     const jessibucaExample = ref(null)
+    const videoError = ref(false)
     let jessibuca = null
 
     const parentData = inject(scratchableLatexData)
@@ -147,7 +152,7 @@ export default {
       })
 
       jessibuca.on('play', () => {
-        console.log('play')
+        videoError.value = false
       })
 
       jessibuca.on('error', data => {
@@ -155,6 +160,8 @@ export default {
         if (!videoConfig.operateBtns || !videoConfig.operateBtns.play) {
           onePlayShow.value = true
         }
+
+        videoError.value = true
       })
 
       jessibuca.on('timeout',function(data){
@@ -220,6 +227,7 @@ export default {
 
     return {
       flvVideoEl,
+      videoError,
       jessibuca: jessibucaExample,
       videoClass,
       handleVideoResize: emitterEvent.videoResize,
@@ -256,6 +264,17 @@ export default {
     top: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
+  }
+
+  .video--error {
+    color: #F56C6C;
+    text-align: center;
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    top: 5%;
+    transform: translate(-50%, 0);
+    z-index: 9;
   }
 
   .one-play {
