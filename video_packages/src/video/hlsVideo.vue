@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-13 11:05:25
+ * @LastEditTime: 2022-01-13 11:25:47
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -133,6 +133,7 @@ export default {
         stopVideo = false
         videoStatus.centerPlay = false
         videoStatus.play = true
+        videoStatus.loading = false
       },
       pause: () => {
         hls.stopLoad()
@@ -159,9 +160,11 @@ export default {
       },
       canplay: () => {
         console.log('canplay')
+        videoStatus.loading = false
       },
       waiting: () => {
         console.log('waiting')
+        videoStatus.loading = true
       },
       stalled: () => {
         console.log(stalled)
@@ -205,6 +208,8 @@ export default {
   
           // 播放异常事件
           hls.on(Hls.Events.ERROR, (event, data) => {
+            conosle.log(event)
+            conosle.log(data)
             if (data.fatal) {
               switch(data.type) {
               case Hls.ErrorTypes.NETWORK_ERROR: // 网络异常
@@ -223,8 +228,6 @@ export default {
               }
             }
           });
-
-          videoEventLinstener.on()
 
           videoConfig.autoPlay && videoClick.play();
 
@@ -255,6 +258,7 @@ export default {
         }
       })
 
+      videoEventLinstener.on()
       emitterEventLinstener.on()
       fullscreenchangeEvent.on()
     })

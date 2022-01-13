@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:56:53
- * @LastEditTime: 2022-01-13 11:06:09
+ * @LastEditTime: 2022-01-13 11:20:53
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -20,7 +20,7 @@
 </template>
 <script>
 import { ref, nextTick, watchEffect, computed, onUnmounted, onMounted, inject } from 'vue'
-import { loadJessibuca, isDOMVisible, handleEmitterEvent } from '../utils/index'
+import { loadJessibuca, isDOMVisible, handleEmitterEvent, handleDOMEventLinsteners } from '../utils/index'
 import { scratchableLatexData } from '../injectKey'
 import { validatorJessibucaConfig, getDefaultConfig } from '../utils/config'
 import jessibucaUrl from '../static/jessibuca/jessibuca.js'
@@ -166,18 +166,6 @@ export default {
       })
     }
 
-    watchEffect(() => {
-      if (jessibuca && jessibuca.isPlaying) {
-        videoClick.play(props.url)
-      }
-    })
-
-    onMounted(() => {
-      loadJessibuca(jessibucaUrl).then(() => {
-        initFlvVideo()
-      })
-    })
-
     const emitterEvent = {
       videoResize: () => {
         jessibuca && jessibuca.resize()
@@ -195,12 +183,34 @@ export default {
       }
     }
 
+    const windowLinstener = {
+      resize: throttle(() => {
+        emitterEvent.videoResize()
+      }, 800)
+    }
+
+    const windowEventLinstener = handleDOMEventLinsteners(windowLinstener)
+
+    watchEffect(() => {
+      if (jessibuca && jessibuca.isPlaying) {
+        videoClick.play(props.url)
+      }
+    })
+
+    onMounted(() => {
+
+      windowEventLinstener.on()
+      loadJessibuca(jessibucaUrl).then(() => {
+        initFlvVideo()
+      })
+    })
+
     const emitterEventLinstener = handleEmitterEvent(emitterEvent)
 
     onUnmounted(() => {
       videoClick.destroy()
       jessibucaExample.value = null
-
+      windowEventLinstener.off()
       emitterEventLinstener.off()
     })
 
