@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-10-12 20:32:08
- * @LastEditTime: 2022-01-13 09:18:08
+ * @LastEditTime: 2022-01-13 11:09:10
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 # 视频九宫格组件 支持flv、m3u8 基于hls.js、jessibuca.js二次开发
@@ -16,7 +16,7 @@
 | config | Object | 参考通用配置项以及jessibuca配置项 |  |  |
 ### 使用方式
 ```
-import { flvVideo } from 'grid-video'
+import { flvVideo } from '@grid/video'
 
 <flvVideo :url="videoUrl" :config="{}"></flvVideo>
 ```
@@ -31,7 +31,7 @@ _________________
 | config | Object | 参考通用配置项 <font color="red">注：hlsVideo只支持通用配置项</font> |  |  |
 #### 使用方式
 ```
-import { hlsVideo } from 'grid-video'
+import { hlsVideo } from '@grid/video'
 
 <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8"></hlsVideo>
 ```
@@ -55,7 +55,7 @@ _________________
 | setScratchableLatex | 设置展示视频数量 | Number | 2 / 4 / 9 |
 #### 使用方式
 ```
-import { flvVideo, ScratchableLatex, hlsVideo } from 'grid-video'
+import { flvVideo, ScratchableLatex, hlsVideo } from '@grid/video'
 
 <ScratchableLatex class="video-container" :autoPlay="false" :defaultNum="2" :config="{}" ref="videoContainer">
   <div>

@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:56:53
- * @LastEditTime: 2022-01-12 16:52:16
+ * @LastEditTime: 2022-01-13 11:06:09
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -20,13 +20,12 @@
 </template>
 <script>
 import { ref, nextTick, watchEffect, computed, onUnmounted, onMounted, inject } from 'vue'
-import { loadJessibuca } from '../utils/index'
+import { loadJessibuca, isDOMVisible, handleEmitterEvent } from '../utils/index'
 import { scratchableLatexData } from '../injectKey'
 import { validatorJessibucaConfig, getDefaultConfig } from '../utils/config'
-import emitter from '../emitter/index'
 import jessibucaUrl from '../static/jessibuca/jessibuca.js'
 import decoderUrl from '../static/jessibuca/decoder.js'
-import { merge } from 'lodash-es'
+import { merge, throttle } from 'lodash-es'
 
 export default {
   name: 'flvVideo',
@@ -55,7 +54,7 @@ export default {
 
     const flvVideoEl = ref(null)
 
-    let videoShow = true
+    let videoShowStatus = true
     
     const videoConfig = merge(props.config, { autoPlay: props.autoPlay }, parentData || {})
 
@@ -101,7 +100,8 @@ export default {
      */    
     const videoClick = {
       play: url => {
-        if (!jessibuca || !videoShow) {
+        console.log(videoShowStatus)
+        if (!jessibuca || !videoShowStatus) {
           return
         }
 
@@ -136,7 +136,6 @@ export default {
         loadingTimeout: 40,
         useWCS: true,
         decoder: decoderUrl,
-        isNotMute: false,
         ...getDefaultConfig(),
         ...validatorJessibucaConfig(videoConfig)
       })
@@ -183,32 +182,30 @@ export default {
       videoResize: () => {
         jessibuca && jessibuca.resize()
       },
-      handleVideoShow: () => {
-        const style = window.getComputedStyle(flvVideoEl.value)
+      videoShow: () => {
+        videoShowStatus = isDOMVisible(flvVideoEl)
 
-        videoShow = style.visibility === 'visible'
-
-        if (!videoShow && jessibuca && jessibuca.isPlaying()) {
+        if (!videoShowStatus && jessibuca && jessibuca.isPlaying()) {
           videoClick.pause()
         }
 
-        if(videoShow && autoPlay && jessibuca && !jessibuca.isPlaying()) {
+        if(videoShowStatus && autoPlay && jessibuca && !jessibuca.isPlaying()) {
           videoClick.play(props.url)
         }
       }
     }
 
+    const emitterEventLinstener = handleEmitterEvent(emitterEvent)
+
     onUnmounted(() => {
       videoClick.destroy()
       jessibucaExample.value = null
 
-      emitter.off('videoResize', emitterEvent.videoResize)
-      emitter.off('videShow', emitterEvent.handleVideoShow)
+      emitterEventLinstener.off()
     })
 
     if (parentData) {
-      emitter.on('videoResize', emitterEvent.videoResize)
-      emitter.on('videShow', emitterEvent.handleVideoShow)
+      emitterEventLinstener.on()
     }
 
     return {

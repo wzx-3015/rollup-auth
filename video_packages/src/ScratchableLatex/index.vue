@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-06 11:31:30
- * @LastEditTime: 2022-01-12 16:52:30
+ * @LastEditTime: 2022-01-13 10:20:09
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -78,7 +78,7 @@ export default {
 
       // 延迟等待component 加载完成
       nextTick(() => {
-        emitter.emit('videShow')
+        emitter.emit('videoShow')
         emitter.emit('videoResize')
       })
     }

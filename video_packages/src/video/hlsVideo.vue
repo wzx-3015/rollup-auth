@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-13 09:45:07
+ * @LastEditTime: 2022-01-13 11:05:25
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -41,11 +41,10 @@
 <script>
 import Hls from 'hls.js'
 import { ref, onMounted, onUnmounted, inject, reactive, watchEffect } from 'vue'
-import { launchFullscreen, exitFullscreen } from '../utils/index'
+import { launchFullscreen, exitFullscreen, isDOMVisible, handleEmitterEvent, handleDOMEventLinsteners, handleDOMEventLinstener } from '../utils/index'
 import { getDefaultConfig } from '../utils/config'
 import { scratchableLatexData } from '../injectKey'
 import { merge } from 'lodash-es'
-import emitter from '../emitter/index'
 
 export default {
   name: 'hlsVideo',
@@ -95,7 +94,7 @@ export default {
     const hlsVideoFullScreenEl = ref(null)
 
     let stopVideo = false
-    let videoShow = true
+    let videoShowStatus = false
 
     /**
      * @description: 主动触发video事件处理
@@ -104,7 +103,7 @@ export default {
      */    
     const videoClick = {
       play: () => {
-        if (!props.url || !videoShow) {
+        if (!props.url || !videoShowStatus) {
           return
         }
         
@@ -169,47 +168,22 @@ export default {
       }
     }
 
-    const isDOMShow = () => {
-      const style = window.getComputedStyle(hlsVideoEl.value)
-
-      return style.visibility === 'visible'
-    }
 
     const emitterEvent = {
-      handleVideoShow: () => {
-        videoShow = isDOMShow()
+      videoShow: () => {
+        videoShowStatus = isDOMVisible(hlsVideoFullScreenEl)
 
-        if (videoShow && !hls) {
+        if (videoShowStatus && !hls) {
           initHlsVideo(props.url)
         }
 
-        if (!videoShow) {
+        if (!videoShowStatus) {
           videoClick.destroy()
         }
       }
     }
 
-    /**
-     * @description: 加载事件
-     * @param {*}
-     * @return {*}
-     */    
-    const handAddEventLinstener = el => {
-      Object.entries(videoLinstener).forEach(([ eventName, evnetF ]) => {
-        el.addEventListener(eventName, evnetF)
-      })
-    }
-
-    /**
-     * @description: 卸载事件
-     * @param {*}
-     * @return {*}
-     */    
-    const handleReomveEventLinstener = el => {
-      Object.entries(videoLinstener).forEach(([ eventName, evnetF ]) => {
-        el.removeEventListener(eventName, evnetF)
-      })
-    }
+    const videoEventLinstener = handleDOMEventLinsteners(videoLinstener, hlsVideoEl)
 
     let hls = null
     const initHlsVideo = url => {
@@ -250,8 +224,8 @@ export default {
             }
           });
 
-          handAddEventLinstener(hlsVideoEl.value)
-  
+          videoEventLinstener.on()
+
           videoConfig.autoPlay && videoClick.play();
 
           resolve(Hls)
@@ -267,26 +241,29 @@ export default {
       }
     }
 
+    const emitterEventLinstener = handleEmitterEvent(emitterEvent)
+
+    const fullscreenchangeEvent = handleDOMEventLinstener('fullscreenchange', fullscreenchange, hlsVideoFullScreenEl)
+
     onMounted(() => {
       watchEffect(() => {
         if (hls) {
           videoClick.destroy()
         }
-        if (isDOMShow()) {
+        if (isDOMVisible()) {
           initHlsVideo(props.url)
         }
       })
 
-      hlsVideoFullScreenEl.value.addEventListener('fullscreenchange', fullscreenchange)
-
-      emitter.on('videShow', emitterEvent.handleVideoShow)
+      emitterEventLinstener.on()
+      fullscreenchangeEvent.on()
     })
 
     onUnmounted(() => {
       videoClick.destroy()
-      handleReomveEventLinstener(hlsVideoEl.value)
-      hlsVideoFullScreenEl.value.removeEventListener('fullscreenchange', fullscreenchange)
-      emitter.off('videShow', emitterEvent.handleVideoShow)
+      videoEventLinstener.off()
+      emitterEventLinstener.off()
+      fullscreenchangeEvent.off()
     }) 
 
     /**
