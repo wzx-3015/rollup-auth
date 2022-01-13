@@ -4,7 +4,7 @@ importers:
 
   .:
     specifiers:
-      '@grid/video': workspace:^0.0.1
+      'grid-video': workspace:^0.0.1
       '@vitejs/plugin-vue': ^2.0.1
       '@vitejs/plugin-vue-jsx': ^1.3.3
       axios: ^0.22.0
@@ -19,7 +19,7 @@ importers:
       vue: 3.2.26
       vue-router: 4.0.12_vue@3.2.26
     devDependencies:
-      '@grid/video': link:video_packages
+      'grid-video': link:video_packages
       '@vitejs/plugin-vue': 2.0.1_vite@2.7.10+vue@3.2.26
       '@vitejs/plugin-vue-jsx': 1.3.3
       less: 4.1.2
@@ -55,6 +55,7 @@ importers:
     dependencies:
       flv.js: 1.6.2
       hls.js: 1.1.2
+      lodash-es: 4.17.21
       mitt: 3.0.0
     devDependencies:
       '@babel/core': 7.16.7
@@ -70,7 +71,6 @@ importers:
       acorn-jsx: 5.3.2_acorn@8.7.0
       autoprefixer: 10.4.2_postcss@8.4.5
       cssnano: 5.0.15_postcss@8.4.5
-      lodash-es: 4.17.21
       nprogress: 0.2.0
       postcss: 8.4.5
       rollup: 2.63.0
@@ -1657,7 +1657,7 @@ packages:
 
   /lodash-es/4.17.21:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
-    dev: true
+    dev: false
 
   /lodash.camelcase/4.3.0:
     resolution: {integrity: sha1-soqmKIorn8ZRA1x3EfZathkDMaY=}

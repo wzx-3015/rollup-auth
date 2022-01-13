@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:47:28
- * @LastEditTime: 2022-01-13 11:28:56
+ * @LastEditTime: 2022-01-13 13:08:06
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -65,7 +65,7 @@
 </template>
 <script>
 // import { useDStore } from '../../packages/lib/index'
-import { flvVideo, ScratchableLatex, hlsVideo } from '@grid/video'
+import { flvVideo, ScratchableLatex, hlsVideo } from 'grid-video'
 import { ref } from 'vue'
 
 export default {

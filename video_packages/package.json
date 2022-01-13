@@ -1,9 +1,10 @@
 {
-  "name": "@grid/video",
-  "version": "0.0.1",
+  "name": "grid-video",
+  "version": "0.0.2",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "description": "九宫格视频",
+  "style": "dist/style/index.css",
   "scripts": {
     "dev": "rollup -c -w --environment NODE_ENV:development",
     "build": "rollup -c --environment NODE_ENV:production"
@@ -13,7 +14,7 @@
     "README.md",
     "dist"
   ],
-  "author": "wzx",
+  "author": "~wzx",
   "license": "ISC",
   "peerDependencies": {
     "vue": ">=3"
@@ -32,7 +33,6 @@
     "acorn-jsx": "^5.3.2",
     "autoprefixer": "^10.4.2",
     "cssnano": "^5.0.15",
-    "lodash-es": "^4.17.21",
     "nprogress": "^0.2.0",
     "postcss": "^8.4.5",
     "rollup": "^2.58.0",
@@ -45,6 +45,7 @@
   "dependencies": {
     "flv.js": "^1.6.2",
     "hls.js": "^1.1.2",
+    "lodash-es": "^4.17.21",
     "mitt": "^3.0.0"
   }
 }
