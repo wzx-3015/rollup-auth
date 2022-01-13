@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-10-12 09:13:40
- * @LastEditTime: 2022-01-11 20:57:47
+ * @LastEditTime: 2022-01-13 09:30:12
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import postcss from "rollup-plugin-postcss";
@@ -32,9 +32,6 @@ export default {
     babel({
       exclude: ['node_modules/**', 'src/static/jessibuca/**'],
       babelHelpers: 'bundled',
-      plugins: [
-        '@vue/babel-plugin-jsx'
-      ],
     }),
     commonjs(),
     image(),

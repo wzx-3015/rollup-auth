@@ -1,5 +1,5 @@
 {
-  "name": "dfsj-video",
+  "name": "@grid/video",
   "version": "0.0.1",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -43,10 +43,8 @@
     "vue": "^3.2.26"
   },
   "dependencies": {
-    "@vue/babel-preset-jsx": "^1.2.4",
     "flv.js": "^1.6.2",
     "hls.js": "^1.1.2",
-    "mitt": "^3.0.0",
-    "mpegts.js": "^1.6.10"
+    "mitt": "^3.0.0"
   }
 }

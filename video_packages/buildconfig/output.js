@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-06 13:47:26
- * @LastEditTime: 2022-01-08 10:28:23
+ * @LastEditTime: 2022-01-13 09:19:54
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import pkg from '../package.json'
@@ -12,7 +12,7 @@ const globals = {
 };
 
 const output = [];
-const name = 'dfsjVideo'
+const name = 'gridVideo'
 
 let isSourcemap = process.env.NODE_ENV === 'development';
 
