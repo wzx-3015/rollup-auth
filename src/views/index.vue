@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:47:28
- * @LastEditTime: 2022-01-13 13:08:06
+ * @LastEditTime: 2022-01-13 14:53:17
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -11,10 +11,10 @@
     退出登录
   </el-button> -->
   <div style="height: 900px">
-    <ScratchableLatex class="video-container" :autoPlay="false" :defaultNum="2" :config="{ isNotMute: true, operateBtns: { play: true, audio: true, fullscreen: true } }" ref="videoContainer">
+    <ScratchableLatex class="video-container" :autoPlay="false" :defaultNum="9" :config="{ isNotMute: true, operateBtns: { play: true, audio: true, fullscreen: true } }" ref="videoContainer">
       <div>
         <!-- <flvVideo :url="videoUrl"></flvVideo> -->
-        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8"></hlsVideo>
+        <hlsVideo :url="demoUlr"></hlsVideo>
       </div>
       <div>
         <flvVideo :url="videoUrl"></flvVideo>
@@ -38,7 +38,7 @@
         <flvVideo :url="videoUrl"></flvVideo>
       </div>
       <div>
-        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8"></hlsVideo>
+        <hlsVideo :url="demoUlr"></hlsVideo>
       </div>
       <div>
         <flvVideo :url="videoUrl"></flvVideo>
@@ -90,12 +90,22 @@ export default {
       videoContainer.value.setScratchableLatex(num)
     }
 
+    const demoUlr = ref('http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8')
+
+
+    setTimeout(() => {
+      // demoUlr.value = 'http://220.161.87.62:8800/hls/0/index.m3u8'
+      // videoUrl.value = 'http://192.168.10.142:8055/15868902d399b87.flv'
+      console.log('setTimeout===============')
+    }, 6000)
+
     return {
       handleLoGout,
       videoUrl,
       flvVideoDemo,
       videoContainer,
       handleSwitch,
+      demoUlr,
     }
   }
 }

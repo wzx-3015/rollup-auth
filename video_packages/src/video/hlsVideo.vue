@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-13 11:44:10
+ * @LastEditTime: 2022-01-13 14:52:24
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -174,6 +174,9 @@ export default {
       },
       stalled: () => {
         console.log(stalled)
+      },
+      error: (err) => {
+        console.log(err)
       }
     }
 
@@ -236,7 +239,11 @@ export default {
             }
           });
 
-          videoConfig.autoPlay && videoClick.play();
+          if (videoStatus.play || videoConfig.autoPlay) {
+            videoClick.play();
+          }
+
+          videoStatus.error = false;
 
           resolve(Hls)
         }
@@ -255,15 +262,15 @@ export default {
 
     const fullscreenchangeEvent = handleDOMEventLinstener('fullscreenchange', fullscreenchange, hlsVideoFullScreenEl)
 
+    watchEffect(() => {
+      if (hls) {
+        videoClick.destroy()
+      }
+      if (!isDOMVisible()) {
+        initHlsVideo(props.url)
+      }
+    })
     onMounted(() => {
-      watchEffect(() => {
-        if (hls) {
-          videoClick.destroy()
-        }
-        if (isDOMVisible()) {
-          initHlsVideo(props.url)
-        }
-      })
 
       videoEventLinstener.on()
       emitterEventLinstener.on()
@@ -365,7 +372,7 @@ export default {
 
   .video--play--loading {
     position: absolute;
-    z-index: 2;
+    z-index: 5;
     left: 0;
     top: 0;
     width: 100%;

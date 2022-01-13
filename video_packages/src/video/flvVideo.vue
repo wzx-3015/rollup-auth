@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:56:53
- * @LastEditTime: 2022-01-13 11:50:36
+ * @LastEditTime: 2022-01-13 14:55:56
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -199,7 +199,7 @@ export default {
     const windowEventLinstener = handleDOMEventLinsteners(windowLinstener)
 
     watchEffect(() => {
-      if (jessibuca && jessibuca.isPlaying) {
+      if (jessibuca && jessibuca.isPlaying()) {
         videoClick.play(props.url)
       }
     })

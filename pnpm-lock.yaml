@@ -4,11 +4,11 @@ importers:
 
   .:
     specifiers:
-      'grid-video': workspace:^0.0.1
       '@vitejs/plugin-vue': ^2.0.1
       '@vitejs/plugin-vue-jsx': ^1.3.3
       axios: ^0.22.0
       element-plus: ^1.1.0-beta.20
+      grid-video: workspace:^0.0.2
       less: ^4.1.2
       vite: ^2.7.0
       vue: ^3.2.16
@@ -19,9 +19,9 @@ importers:
       vue: 3.2.26
       vue-router: 4.0.12_vue@3.2.26
     devDependencies:
-      'grid-video': link:video_packages
       '@vitejs/plugin-vue': 2.0.1_vite@2.7.10+vue@3.2.26
       '@vitejs/plugin-vue-jsx': 1.3.3
+      grid-video: link:video_packages
       less: 4.1.2
       vite: 2.7.10_less@4.1.2
 

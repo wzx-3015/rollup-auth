@@ -2,23 +2,16 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-06 11:31:30
- * @LastEditTime: 2022-01-13 10:20:09
+ * @LastEditTime: 2022-01-13 14:37:52
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
-  <div class="scratchable-latex-container" :scratchable-latex-number="scratchableLatexNumber">
-    <component
-      v-for="(item, i) in slotsData"
-      v-show="item.show"
-      :style="{visibility: item.show ? 'visible' : 'hidden'}"
-      :key="item.component.scopeId + i"
-      :is="item.component"
-      class="scratchable-latex-item"
-    />
+  <div class="scratchable-latex-container" ref="scratchableLatexContainer" :scratchable-latex-number="scratchableLatexNumber">
+    <slot></slot>
   </div>
 </template>
 <script>
-import { provide, ref, nextTick } from 'vue'
+import { provide, ref, nextTick, onMounted } from 'vue'
 import { scratchableLatexData } from '../injectKey'
 import emitter from '../emitter/index'
 
@@ -45,6 +38,8 @@ export default {
       autoPlay: props.autoPlay
     })
 
+    const scratchableLatexContainer = ref(null)
+
     // 获取插槽数量
     const slotsLen = props.defaultNum || slots.default().length || 0
 
@@ -54,27 +49,18 @@ export default {
 
     const scratchableLatexNumber = ref(maxSlots)
 
-    const slotsData = ref([])
-
     const handleSlots = len => {
-      if (scratchableLatexNumber.value === len && slotsData.value.length) {
-        return
-      }
-
-      scratchableLatexNumber.value = len
-
-      slotsData.value = slots.default().splice(0, maxLength).map((v, i) => {
-        if (i < len) {
-          return {
-            show: true,
-            component: v,
-          }
-        }
-        return {
-          show: false,
-          component: v,
+      Array.from(scratchableLatexContainer.value.children).forEach((node, i) => {
+        if (i >= len) {
+          node.style.display = 'none'
+          node.style.visibility = 'hidden'
+        } else {
+          node.style.display = 'block'
+          node.style.visibility = 'visible'
         }
       })
+
+      scratchableLatexNumber.value = len
 
       // 延迟等待component 加载完成
       nextTick(() => {
@@ -96,11 +82,13 @@ export default {
       }
     }
 
-    setScratchableLatex()
+    onMounted(() => {
+      setScratchableLatex()
+    })
 
     return {
-      slotsData,
       scratchableLatexNumber,
+      scratchableLatexContainer,
       handleSlots,
       setScratchableLatex
     }
