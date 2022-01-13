@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-13 15:32:30
+ * @LastEditTime: 2022-01-13 15:34:08
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -389,6 +389,8 @@ export default {
     .loading-container,
     .video--play--btn{
       color: fade(#fff, 70%);
+      background: fade(#000, 25%);
+      border-radius: 50%;
       i.iconfont {
         display: inline-block;
         font-size: 60px;
