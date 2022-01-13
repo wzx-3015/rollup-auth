@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-13 14:52:24
+ * @LastEditTime: 2022-01-13 15:23:03
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -271,6 +271,14 @@ export default {
       }
     })
     onMounted(() => {
+      hlsVideoFullScreenEl.value.oncontextmenu = e => {
+        if (e.button === 2) {
+          e.preventDefault()
+        } else {
+          return tue
+        }
+      }
+      
 
       videoEventLinstener.on()
       emitterEventLinstener.on()
@@ -372,7 +380,7 @@ export default {
 
   .video--play--loading {
     position: absolute;
-    z-index: 5;
+    z-index: 4;
     left: 0;
     top: 0;
     width: 100%;
@@ -428,7 +436,7 @@ export default {
     color: fade(#fff, 70%);
     display: flex;
     align-items: center;
-    z-index: 3;
+    z-index: 5;
 
     > div{
       flex-basis: 26px;

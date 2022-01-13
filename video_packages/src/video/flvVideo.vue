@@ -2,11 +2,11 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:56:53
- * @LastEditTime: 2022-01-13 14:55:56
+ * @LastEditTime: 2022-01-13 15:21:36
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
-  <div class="flv-video-container" :class="videoClass">
+  <div class="flv-video-container" ref="flvVideoContainerEl" :class="videoClass">
     <div ref="flvVideoEl" class="flv-video-el">
       <div class="slot-canvas-layer" v-if="slotContainerShow">
         <slot />
@@ -53,6 +53,7 @@ export default {
     const onePlayShow = ref(false)
     const jessibucaExample = ref(null)
     const videoError = ref(false)
+    const flvVideoContainerEl = ref(null)
     let jessibuca = null
 
     const parentData = inject(scratchableLatexData)
@@ -205,6 +206,13 @@ export default {
     })
 
     onMounted(() => {
+      flvVideoContainerEl.value.oncontextmenu = e => {
+        if (e.button === 2) {
+          e.preventDefault()
+        } else {
+          return tue
+        }
+      }
 
       windowEventLinstener.on()
       loadJessibuca(jessibucaUrl).then(() => {
@@ -227,6 +235,7 @@ export default {
 
     return {
       flvVideoEl,
+      flvVideoContainerEl,
       videoError,
       jessibuca: jessibucaExample,
       videoClass,

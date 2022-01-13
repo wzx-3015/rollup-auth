@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:47:28
- * @LastEditTime: 2022-01-13 14:53:17
+ * @LastEditTime: 2022-01-13 15:23:11
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -17,29 +17,29 @@
         <hlsVideo :url="demoUlr"></hlsVideo>
       </div>
       <div>
-        <flvVideo :url="videoUrl"></flvVideo>
+        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv2_2/index.m3u8"></hlsVideo>
       </div>
       <div>
-        <flvVideo :url="videoUrl"></flvVideo>
+        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv3_2/index.m3u8"></hlsVideo>
       </div>
       <div>
-        <flvVideo :url="videoUrl"></flvVideo>
+        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv4_2/index.m3u8"></hlsVideo>
       </div>
       <div>
-        <flvVideo :url="videoUrl"></flvVideo>
+        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv5_2/index.m3u8"></hlsVideo>
       </div>
       <div>
-        <flvVideo :url="videoUrl"></flvVideo>
+        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv6_2/index.m3u8"></hlsVideo>
       </div>
       <div>
-        <flvVideo :url="videoUrl"></flvVideo>
+        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv7_2/index.m3u8"></hlsVideo>
       </div>
       <div>
-        <flvVideo :url="videoUrl"></flvVideo>
+        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv8_2/index.m3u8"></hlsVideo>
       </div>
-      <div>
-        <hlsVideo :url="demoUlr"></hlsVideo>
-      </div>
+      <!-- <div>
+        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv10_2/index.m3u8"></hlsVideo>
+      </div> -->
       <div>
         <flvVideo :url="videoUrl"></flvVideo>
       </div>
