@@ -1,6 +1,6 @@
 {
   "name": "grid-video",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "description": "九宫格视频",
@@ -13,6 +13,14 @@
     "package.json",
     "README.md",
     "dist"
+  ],
+  "keywords": [
+    "video",
+    "hlsVideo",
+    "flvVideo",
+    "m3u8",
+    "flv",
+    "scratchableLatex"
   ],
   "author": "~wzx",
   "license": "ISC",
