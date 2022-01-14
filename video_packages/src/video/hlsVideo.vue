@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-14 14:39:35
+ * @LastEditTime: 2022-01-14 14:52:52
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -141,12 +141,15 @@ export default {
         videoStatus.play = true
         videoStatus.loading = false
         videoStatus.error = false
+
+        emit('playChange', true)
       },
       pause: () => {
         hls.stopLoad()
         stopVideo = true
         videoStatus.centerPlay = true
         videoStatus.play = false
+        emit('playChange', false)
       },
       ended: () => {
         videoStatus.centerPlay = true
@@ -332,6 +335,8 @@ export default {
      */  
     const handleMutedClick = () => {
       videoStatus.muted = !videoStatus.muted
+
+      emit('audioChange', videoStatus.muted)
     }
 
     /**

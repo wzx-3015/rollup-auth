@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:56:53
- * @LastEditTime: 2022-01-14 14:40:17
+ * @LastEditTime: 2022-01-14 14:53:03
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -48,7 +48,7 @@ export default {
     }
   },
   expose: ['jessibuca', 'handleVideoResize'],
-  setup (props, { slots }) {
+  setup (props, { slots, emit }) {
     const slotContainerShow = ref(slots.default && slots.default().length ? true : false)
     const onePlayShow = ref(false)
     const jessibucaExample = ref(null)
@@ -106,7 +106,6 @@ export default {
      */    
     const videoClick = {
       play: url => {
-        console.log(videoShowStatus)
         if (!jessibuca || !videoShowStatus) {
           return
         }
@@ -154,6 +153,19 @@ export default {
 
       jessibuca.on('play', () => {
         videoError.value = false
+        emit('playChange', true)
+      })
+
+      jessibuca.on('pause', () => {
+        emit('playChange', false)
+      })
+
+      jessibuca.on('mute', flag => {
+        emit('audioChange', flag)
+      })
+
+      jessibuca.on('fullscreen', flag => {
+        emit('fullscreenChange', flag)
       })
 
       jessibuca.on('error', data => {

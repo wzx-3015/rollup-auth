@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:47:28
- * @LastEditTime: 2022-01-14 14:27:31
+ * @LastEditTime: 2022-01-14 14:46:19
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -11,13 +11,13 @@
     退出登录
   </el-button> -->
   <div style="height: 900px">
-    <ScratchableLatex class="video-container" :gap="4" :autoPlay="false" :defaultNum="9" :config="{ isNotMute: true, operateBtns: { play: false, audio: true, fullscreen: true } }" ref="videoContainer">
+    <ScratchableLatex class="video-container" :gap="4" :autoPlay="false" :defaultNum="9" :config="{ isNotMute: true, operateBtns: { play: true, audio: true, fullscreen: true } }" ref="videoContainer">
       <div>
         <!-- <flvVideo :url="videoUrl"></flvVideo> -->
         <hlsVideo :url="demoUlr"></hlsVideo>
       </div>
       <div>
-        <hlsVideo @fullscreenChange="handleFullscreenChange" url="http://cctvalih5ca.v.myalicdn.com/live/cctv2_2/index.m3u8"></hlsVideo>
+        <hlsVideo @fullscreenChange="handleFullscreenChange" @audio="handleAudio" @play="handlePlay" url="http://cctvalih5ca.v.myalicdn.com/live/cctv2_2/index.m3u8"></hlsVideo>
       </div>
       <div>
         <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv3_2/index.m3u8"></hlsVideo>
@@ -108,7 +108,15 @@ export default {
     }
 
     const handleFullscreenChange = (status) => {
-      console.log(status)
+      console.log('handleFullscreenChange', status)
+    }
+
+    const handlePlay = (status) => {
+      console.log('handlePlay', status)
+    }
+
+    const handleAudio = (status) => {
+      console.log('handleAudio', status)
     }
 
     return {
@@ -120,6 +128,8 @@ export default {
       demoUlr,
       handleceshi,
       handleFullscreenChange,
+      handlePlay,
+      handleAudio,
     }
   }
 }
