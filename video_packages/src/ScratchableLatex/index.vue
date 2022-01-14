@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-06 11:31:30
- * @LastEditTime: 2022-01-13 14:37:52
+ * @LastEditTime: 2022-01-14 13:31:04
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -14,6 +14,7 @@
 import { provide, ref, nextTick, onMounted } from 'vue'
 import { scratchableLatexData } from '../injectKey'
 import emitter from '../emitter/index'
+import { calcDOMSize } from './utils'
 
 export default {
   name: 'scratchableLatex',
@@ -30,6 +31,10 @@ export default {
     config: {
       type: Object,
       default: () => {}
+    },
+    gap: {
+      type: Number,
+      default: 2,
     }
   },
   setup(props, { slots }) {
@@ -49,14 +54,18 @@ export default {
 
     const scratchableLatexNumber = ref(maxSlots)
 
-    const handleSlots = len => {
+    const handleSlots = (len, gap = props.gap) => {
+      scratchableLatexContainer.value.style.gap = `${gap}px`
       Array.from(scratchableLatexContainer.value.children).forEach((node, i) => {
         if (i >= len) {
           node.style.display = 'none'
           node.style.visibility = 'hidden'
         } else {
+          const { width, height } = calcDOMSize(len, gap)
           node.style.display = 'block'
           node.style.visibility = 'visible'
+          node.style.width = width
+          node.style.height = height
         }
       })
 
@@ -98,25 +107,41 @@ export default {
 
 <style lang="less" scoped>
 .scratchable-latex-container {
-  display: grid;
   height: 100%;
-  grid-row-gap: 2px;
-  grid-column-gap: 2px;
-  animation: zoomIn 2s ease 1.5s 1 both;
+  display: flex;
+  flex-wrap: wrap;
+  transition: all 0.2s;
+  gap: 2px;
+  // animation: zoomIn 2s ease 1.5s 1 both;
+  ::v-deep(.scratchable--latex--item-9) {
+    width: calc(100% / 3);
+    height: calc(100% / 3);
+  }
+
+  ::v-deep(.scratchable--latex--item-4) {
+    width: calc(100% / 2);
+    height: calc(100% / 2);
+  }
+
+  ::v-deep(.scratchable--latex--item-2) {
+    width: calc(100% / 2);
+    height: 100%;
+  }
 }
 
-.scratchable-latex-container[scratchable-latex-number="9"] {
-  grid-template-columns: repeat(3, calc(33.33% - 1.33px));
-  grid-template-rows: repeat(3, calc(33.33% - 1.33px));
-}
 
-.scratchable-latex-container[scratchable-latex-number="4"] {
-  grid-template-columns: repeat(2, calc(50% - 1px));
-  grid-template-rows: repeat(2, calc(50% - 1px));
-}
+// .scratchable-latex-container[scratchable-latex-number="9"] {
+//   grid-template-columns: repeat(3, 33.33%);
+//   grid-template-rows: repeat(3, calc(33.33% - 1.33px));
+// }
 
-.scratchable-latex-container[scratchable-latex-number="2"] {
-  grid-template-columns: repeat(2, calc(50% - 1px));
-  grid-template-rows: 100%;
-}
+// .scratchable-latex-container[scratchable-latex-number="4"] {
+//   grid-template-columns: repeat(2, calc(50% - 1px));
+//   grid-template-rows: repeat(2, calc(50% - 1px));
+// }
+
+// .scratchable-latex-container[scratchable-latex-number="2"] {
+//   grid-template-columns: repeat(2, calc(50% - 1px));
+//   grid-template-rows: 100%;
+// }
 </style>

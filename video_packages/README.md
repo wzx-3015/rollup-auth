@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-10-12 20:32:08
- * @LastEditTime: 2022-01-13 15:58:57
+ * @LastEditTime: 2022-01-14 13:32:14
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 # 视频九宫格组件 支持flv、m3u8 基于hls.js、jessibuca.js二次开发
@@ -47,6 +47,7 @@ _________________
 | 属性 | 类型 | 说明 | 默认值 | 可选值 |
 | --- | --- | --- | --- | --- |
 | defaultNum | Number | 默认展示视频数量 | 9 | 2 / 4 / 9 |
+| gap | Number | 元素间隔 | 2 | Number |
 | autoPlay | Boolean | 视频是否自动播放。<font color="red">注：为保证视频自动播放生效，此属性为true时将会强制设置音频为静音模式</font> | false | true / false |
 | config | Object | 视频组件配置项，参考通用配置项。<font color="red">注：flv视频参考详细配置</font> | null | null |
 

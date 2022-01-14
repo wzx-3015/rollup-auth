@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:47:28
- * @LastEditTime: 2022-01-13 16:57:43
+ * @LastEditTime: 2022-01-14 13:30:23
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -11,7 +11,7 @@
     退出登录
   </el-button> -->
   <div style="height: 900px">
-    <ScratchableLatex class="video-container" :autoPlay="false" :defaultNum="9" :config="{ isNotMute: true, operateBtns: { play: false, audio: true, fullscreen: true } }" ref="videoContainer">
+    <ScratchableLatex class="video-container" :gap="4" :autoPlay="false" :defaultNum="9" :config="{ isNotMute: true, operateBtns: { play: false, audio: true, fullscreen: true } }" ref="videoContainer">
       <div>
         <!-- <flvVideo :url="videoUrl"></flvVideo> -->
         <hlsVideo :url="demoUlr"></hlsVideo>
