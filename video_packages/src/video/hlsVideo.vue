@@ -47,7 +47,7 @@ import Hls from 'hls.js'
 import { ref, onMounted, onUnmounted, inject, reactive, watchEffect } from 'vue'
 import { launchFullscreen, exitFullscreen, isDOMVisible, handleEmitterEvent, handleDOMEventLinsteners, handleDOMEventLinstener } from '../utils/index'
 import { getDefaultConfig } from '../utils/config'
-import { scratchableLatexData } from '../injectKey'
+import { scratchableLatexConfig } from '../injectKey'
 import { merge, throttle } from 'lodash-es'
 
 export default {
@@ -67,7 +67,7 @@ export default {
     },
   },
   setup(props, { slots }) {
-    const parentData = inject(scratchableLatexData)
+    const parentData = inject(scratchableLatexConfig)
     const slotContainerShow = ref(slots.default && slots.default().length ? true : false)
     const videoConfig = merge(getDefaultConfig(), props.config, { autoPlay: props.autoPlay }, parentData || {})
 

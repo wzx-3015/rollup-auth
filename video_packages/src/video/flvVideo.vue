@@ -25,7 +25,7 @@
 <script>
 import { ref, nextTick, watchEffect, computed, onUnmounted, onMounted, inject } from 'vue'
 import { loadJessibuca, isDOMVisible, handleEmitterEvent, handleDOMEventLinsteners } from '../utils/index'
-import { scratchableLatexData } from '../injectKey'
+import { scratchableLatexConfig } from '../injectKey'
 import { validatorJessibucaConfig, getDefaultConfig } from '../utils/config'
 import jessibucaUrl from '../static/jessibuca/jessibuca.js'
 import decoderUrl from '../static/jessibuca/decoder.js'
@@ -56,7 +56,7 @@ export default {
     const flvVideoContainerEl = ref(null)
     let jessibuca = null
 
-    const parentData = inject(scratchableLatexData)
+    const parentData = inject(scratchableLatexConfig)
 
     const flvVideoEl = ref(null)
 

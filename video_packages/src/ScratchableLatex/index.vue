@@ -12,7 +12,7 @@
 </template>
 <script>
 import { provide, ref, nextTick, onMounted } from 'vue'
-import { scratchableLatexData } from '../injectKey'
+import { scratchableLatexConfig } from '../injectKey'
 import emitter from '../emitter/index'
 import { calcDOMSize } from './utils'
 
@@ -38,7 +38,7 @@ export default {
     }
   },
   setup(props, { slots }) {
-    provide(scratchableLatexData, {
+    provide(scratchableLatexConfig, {
       ...props.config,
       autoPlay: props.autoPlay
     })
