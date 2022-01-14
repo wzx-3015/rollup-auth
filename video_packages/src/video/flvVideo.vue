@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:56:53
- * @LastEditTime: 2022-01-13 15:35:28
+ * @LastEditTime: 2022-01-14 14:40:17
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-import { ref, nextTick, watchEffect, computed, onUnmounted, onMounted, inject } from 'vue'
+import { ref, nextTick, watchEffect, computed, onBeforeUnmount, onMounted, inject } from 'vue'
 import { loadJessibuca, isDOMVisible, handleEmitterEvent, handleDOMEventLinsteners } from '../utils/index'
 import { scratchableLatexConfig } from '../injectKey'
 import { validatorJessibucaConfig, getDefaultConfig } from '../utils/config'
@@ -222,7 +222,7 @@ export default {
 
     const emitterEventLinstener = handleEmitterEvent(emitterEvent)
 
-    onUnmounted(() => {
+    onBeforeUnmount(() => {
       videoClick.destroy()
       jessibucaExample.value = null
       windowEventLinstener.off()

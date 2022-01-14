@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-13 17:02:47
+ * @LastEditTime: 2022-01-14 14:39:35
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -44,8 +44,8 @@
 </template>
 <script>
 import Hls from 'hls.js'
-import { ref, onMounted, onUnmounted, inject, reactive, watchEffect } from 'vue'
-import { launchFullscreen, exitFullscreen, isDOMVisible, handleEmitterEvent, handleDOMEventLinsteners, handleDOMEventLinstener } from '../utils/index'
+import { ref, onMounted, onBeforeUnmount, inject, reactive, watchEffect } from 'vue'
+import { launchFullscreen, exitFullscreen, isDOMVisible, handleEmitterEvent, handleDOMEventLinsteners } from '../utils/index'
 import { getDefaultConfig } from '../utils/config'
 import { scratchableLatexConfig } from '../injectKey'
 import { merge, throttle } from 'lodash-es'
@@ -66,7 +66,7 @@ export default {
       default: false
     },
   },
-  setup(props, { slots }) {
+  setup(props, { slots, emit }) {
     const parentData = inject(scratchableLatexConfig)
     const slotContainerShow = ref(slots.default && slots.default().length ? true : false)
     const videoConfig = merge(getDefaultConfig(), props.config, { autoPlay: props.autoPlay }, parentData || {})
@@ -261,6 +261,7 @@ export default {
         } else {
           videoStatus.fullscreen = false
         }
+        emit('fullscreenChange', videoStatus.fullscreen)
       },
       mousemove: throttle(() => {
         // 处理控制栏的出现隐藏
@@ -304,7 +305,7 @@ export default {
       hlsVideoContainerEventLinstener.on()
     })
 
-    onUnmounted(() => {
+    onBeforeUnmount(() => {
       videoClick.destroy()
       videoEventLinstener.off()
       emitterEventLinstener.off()

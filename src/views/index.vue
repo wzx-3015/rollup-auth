@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-09-11 14:47:28
- * @LastEditTime: 2022-01-14 13:30:23
+ * @LastEditTime: 2022-01-14 14:27:31
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -17,7 +17,7 @@
         <hlsVideo :url="demoUlr"></hlsVideo>
       </div>
       <div>
-        <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv2_2/index.m3u8"></hlsVideo>
+        <hlsVideo @fullscreenChange="handleFullscreenChange" url="http://cctvalih5ca.v.myalicdn.com/live/cctv2_2/index.m3u8"></hlsVideo>
       </div>
       <div>
         <hlsVideo url="http://cctvalih5ca.v.myalicdn.com/live/cctv3_2/index.m3u8"></hlsVideo>
@@ -107,6 +107,10 @@ export default {
       alert('===')
     }
 
+    const handleFullscreenChange = (status) => {
+      console.log(status)
+    }
+
     return {
       handleLoGout,
       videoUrl,
@@ -115,6 +119,7 @@ export default {
       handleSwitch,
       demoUlr,
       handleceshi,
+      handleFullscreenChange,
     }
   }
 }
