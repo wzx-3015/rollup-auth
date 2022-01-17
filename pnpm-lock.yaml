@@ -8,7 +8,7 @@ importers:
       '@vitejs/plugin-vue-jsx': ^1.3.3
       axios: ^0.22.0
       element-plus: ^1.1.0-beta.20
-      grid-video: workspace:^0.0.5
+      grid-video: workspace:^0.0.6
       less: ^4.1.2
       vite: ^2.7.0
       vue: ^3.2.16
@@ -42,7 +42,6 @@ importers:
       autoprefixer: ^10.4.2
       cssnano: ^5.0.15
       flv.js: ^1.6.2
-      generate-source-map: ^0.0.5
       hls.js: ^1.1.2
       lodash-es: ^4.17.21
       mitt: ^3.0.0
@@ -52,7 +51,6 @@ importers:
       rollup-plugin-copy: ^3.4.0
       rollup-plugin-delete: ^2.0.0
       rollup-plugin-postcss: ^4.0.1
-      rollup-plugin-require-context: ^1.0.1
       rollup-plugin-vue: ^6.0.0
       vue: ^3.2.26
     dependencies:
@@ -75,14 +73,12 @@ importers:
       acorn-jsx: 5.3.2_acorn@8.7.0
       autoprefixer: 10.4.2_postcss@8.4.5
       cssnano: 5.0.15_postcss@8.4.5
-      generate-source-map: 0.0.5
       nprogress: 0.2.0
       postcss: 8.4.5
       rollup: 2.63.0
       rollup-plugin-copy: 3.4.0
       rollup-plugin-delete: 2.0.0
       rollup-plugin-postcss: 4.0.2_postcss@8.4.5
-      rollup-plugin-require-context: 1.0.1
       rollup-plugin-vue: 6.0.0_@vue+compiler-sfc@3.2.26
       vue: 3.2.26
 
@@ -1579,31 +1575,12 @@ packages:
       vue-demi: 0.12.1_vue@3.2.26
     dev: false
 
-  /acorn-dynamic-import/4.0.0_acorn@6.4.2:
-    resolution: {integrity: sha512-d3OEjQV4ROpoflsnUA8HozoIR504TFxNivYEUi6uwz0IYhBkTDXGuWlNdMtybRt3nqVx/L6XqMt0FxkXuWKZhw==}
-    peerDependencies:
-      acorn: ^6.0.0
-    dependencies:
-      acorn: 6.4.2
-    dev: true
-
   /acorn-jsx/5.3.2_acorn@8.7.0:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
       acorn: 8.7.0
-    dev: true
-
-  /acorn-walk/6.2.0:
-    resolution: {integrity: sha512-7evsyfH1cLOCdAzZAd43Cic04yKydNx0cF+7tiA19p1XnLLPU4dpCQOqpjqwokFe//vS0QqfqqjCS2JkiIs0cA==}
-    engines: {node: '>=0.4.0'}
-    dev: true
-
-  /acorn/6.4.2:
-    resolution: {integrity: sha512-XtGIhXwF8YM8bJhGxG5kXgjkEuNGLTkoYqVE+KMR+aspr4KGYmKYg7yUe3KghyQ9yheNwLnjmzh/7+gfDBmHCQ==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
     dev: true
 
   /acorn/8.7.0:
@@ -1622,11 +1599,6 @@ packages:
 
   /alphanum-sort/1.0.2:
     resolution: {integrity: sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=}
-    dev: true
-
-  /amdefine/1.0.1:
-    resolution: {integrity: sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=}
-    engines: {node: '>=0.4.2'}
     dev: true
 
   /ansi-styles/3.2.1:
@@ -2272,12 +2244,6 @@ packages:
     engines: {node: '>=0.8.0'}
     dev: true
 
-  /esprima/1.2.5:
-    resolution: {integrity: sha1-CZNQL+r2aBODJXVvMPmlH+7sEek=}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
-    dev: true
-
   /estree-walker/0.6.1:
     resolution: {integrity: sha512-SqmZANLWS0mnatqbSfRP5g8OXZC12Fgg1IwNtLsyHDzJizORW4khDfjPqJZsemPWBB2uqykUah5YpQ6epsqC/w==}
     dev: true
@@ -2366,13 +2332,6 @@ packages:
 
   /function-bind/1.1.1:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
-    dev: true
-
-  /generate-source-map/0.0.5:
-    resolution: {integrity: sha1-8SVfMWU8sCMeZxOn3IN1r08zpQk=}
-    dependencies:
-      esprima: 1.2.5
-      source-map: 0.1.43
     dev: true
 
   /generic-names/4.0.0:
@@ -3401,15 +3360,6 @@ packages:
       - ts-node
     dev: true
 
-  /rollup-plugin-require-context/1.0.1:
-    resolution: {integrity: sha512-0MVOSz/d8e/InuAOvbyMA6nFDmpek/iEEKXM+UWAafrplh/nOWt0eXZ7G0Tz5W8VwU/Jz3VgOgokSO8Ngo58YA==}
-    dependencies:
-      acorn: 6.4.2
-      acorn-dynamic-import: 4.0.0_acorn@6.4.2
-      acorn-walk: 6.2.0
-      rollup-pluginutils: 2.8.2
-    dev: true
-
   /rollup-plugin-vue/6.0.0_@vue+compiler-sfc@3.2.26:
     resolution: {integrity: sha512-oVvUd84d5u73M2HYM3XsMDLtZRIA/tw2U0dmHlXU2UWP5JARYHzh/U9vcxaN/x/9MrepY7VH3pHFeOhrWpxs/Q==}
     peerDependencies:
@@ -3485,13 +3435,6 @@ packages:
   /source-map-js/1.0.1:
     resolution: {integrity: sha512-4+TN2b3tqOCd/kaGRJ/sTYA0tR0mdXx26ipdolxcwtJVqEnqNYvlCAt1q3ypy4QMlYus+Zh34RNtYLoq2oQ4IA==}
     engines: {node: '>=0.10.0'}
-
-  /source-map/0.1.43:
-    resolution: {integrity: sha1-wkvBRspRfBRx9drL4lcbK3+eM0Y=}
-    engines: {node: '>=0.8.0'}
-    dependencies:
-      amdefine: 1.0.1
-    dev: true
 
   /source-map/0.5.7:
     resolution: {integrity: sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=}

@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:56:53
- * @LastEditTime: 2022-01-17 16:42:51
+ * @LastEditTime: 2022-01-17 17:44:05
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -27,9 +27,10 @@ import { ref, nextTick, watchEffect, computed, onBeforeUnmount, onMounted, injec
 import { loadJessibuca, isDOMVisible, handleEmitterEvent, handleDOMEventLinsteners } from '../utils/index'
 import { scratchableLatexConfig } from '../injectKey'
 import { validatorJessibucaConfig, getDefaultConfig } from '../utils/config'
-// import jessibucaUrl from '../static/jessibuca/jessibuca.js'
-// import decoderUrl from '../static/jessibuca/decoder.js'
 import { merge, throttle } from 'lodash-es'
+
+const decoderUrl = '/decoder.js'
+const jessibucaUrl = '/jessibuca.js'
 
 export default {
   name: 'flvVideo',
@@ -134,7 +135,6 @@ export default {
       }
 
 
-      const res = await import('../static/jessibuca/decoder.js')
       jessibucaExample.value = jessibuca = new window.Jessibuca({
         container: el,
         isFlv: true,
@@ -142,7 +142,7 @@ export default {
         videoBuffer: 0.2,
         loadingTimeout: 40,
         useWCS: true,
-        decoder: res.default,
+        decoder: decoderUrl,
         ...getDefaultConfig(),
         ...validatorJessibucaConfig(videoConfig)
       })
@@ -219,7 +219,7 @@ export default {
       }
     })
 
-    onMounted(async () => {
+    onMounted(() => {
       flvVideoContainerEl.value.oncontextmenu = e => {
         if (e.button === 2) {
           e.preventDefault()
@@ -229,8 +229,7 @@ export default {
       }
 
       windowEventLinstener.on()
-      const res = await import('../static/jessibuca/jessibuca.js')
-      loadJessibuca(res.default).then(() => {
+      loadJessibuca(jessibucaUrl).then(() => {
         initFlvVideo()
       })
     })

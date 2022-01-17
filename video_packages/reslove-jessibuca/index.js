@@ -2,7 +2,7 @@
  * @Description: 加载jessibuca文件
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-08 15:47:56
- * @LastEditTime: 2022-01-08 16:07:58
+ * @LastEditTime: 2022-01-17 17:04:14
  * @LastEditors: @Xin (834529118@qq.com)
  */
 const path = require('path');

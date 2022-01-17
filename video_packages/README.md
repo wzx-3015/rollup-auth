@@ -2,11 +2,32 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-10-12 20:32:08
- * @LastEditTime: 2022-01-14 13:32:14
+ * @LastEditTime: 2022-01-17 17:55:03
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 # 视频九宫格组件 支持flv、m3u8 基于hls.js、jessibuca.js二次开发
 >  <font color="red">flvVideo 和 hlsVideo 控制栏会存在部分差异</font>
+
+# 依赖插件安装
+```
+yarn add copy-webpack-plugin -D  // 版本号为 6.3.2
+
+//vue.config.js 
+module.exports = {
+  chainWebpack (config) {
+    config.plugin('copy').use(require('copy-webpack-plugin'), [
+      {
+        patterns: [
+          {
+            from: 'node_modules/grid-video/dist/jessibuca',
+            to: __dirname + '/dist'
+          }
+        ]
+      }
+    ])
+  },
+}
+```
 ## flvVideo 播放FLV 视频
 #### flvVideo Attributes
 | 属性 | 类型 | 说明 | 默认值 | 可选值 | 是否必填 |
