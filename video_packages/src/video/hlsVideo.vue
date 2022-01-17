@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-10 15:54:58
- * @LastEditTime: 2022-01-14 14:52:52
+ * @LastEditTime: 2022-01-17 15:06:10
  * @LastEditors: @Xin (834529118@qq.com)
 -->
 <template>
@@ -303,6 +303,8 @@ export default {
         }
       }
 
+      emitterEvent.videoShow()
+
       videoEventLinstener.on()
       emitterEventLinstener.on()
       hlsVideoContainerEventLinstener.on()
@@ -321,6 +323,8 @@ export default {
      * @return {*}
      */    
     const handleClickVideoPlay = () => {
+      console.log('=====', videoStatus.play)
+      console.log('=====', videoClick)
       if (videoStatus.play) {
         videoClick.pause()
       } else {
