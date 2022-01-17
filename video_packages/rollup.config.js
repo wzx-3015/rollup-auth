@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2021-10-12 09:13:40
- * @LastEditTime: 2022-01-13 09:30:12
+ * @LastEditTime: 2022-01-17 16:44:30
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import postcss from "rollup-plugin-postcss";
@@ -24,6 +24,7 @@ export default {
   input: 'src/index.js',
   external: ['vue', 'jessibuca'],
   output: output,
+  inlineDynamicImports: true,
   plugins: [
     del({ targets: 'dist/*' }),
     vuePlugin({ preprocessStyles: true }),
@@ -52,7 +53,7 @@ export default {
         src: ['src/static/jessibuca/decoder.wasm'],
         dest: 'dist/assets'
       }
-    ]})
+    ]}),
   ],
   acornInjectPlugins: [jsx()],
 }
