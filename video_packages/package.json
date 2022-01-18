@@ -23,7 +23,7 @@
     "scratchableLatex"
   ],
   "author": "~wzx",
-  "license": "ISC",
+  "license": "MIT",
   "peerDependencies": {
     "vue": ">=3"
   },
