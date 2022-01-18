@@ -2,7 +2,7 @@
  * @Description: 请输入当前文件描述
  * @Author: @Xin (834529118@qq.com)
  * @Date: 2022-01-05 13:26:36
- * @LastEditTime: 2022-01-13 11:08:00
+ * @LastEditTime: 2022-01-18 11:39:19
  * @LastEditors: @Xin (834529118@qq.com)
  */
 import emitter from '../emitter/index'
@@ -40,6 +40,7 @@ export const loadJessibuca = (
 
     script.onerror = (err) => {
       console.error(err);
+      document.body.removeChild(script)
       reject(err);
     };
 
